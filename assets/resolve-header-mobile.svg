@@ -1,0 +1,38 @@
+<svg width="390" height="64" viewBox="0 0 390 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="390" height="64" fill="#0A0A0A"/>
+
+  <!-- "Resolve" wordmark -->
+  <text
+    x="20"
+    y="40"
+    font-family="'SF Pro Display', 'Inter', 'Helvetica Neue', sans-serif"
+    font-size="26"
+    font-weight="600"
+    letter-spacing="-0.5"
+    fill="#FFFFFF"
+  >Resolve</text>
+
+  <!-- Starburst / radial logo icon (top right) -->
+  <g transform="translate(358, 32)">
+    <!-- 16 rays emanating from centre -->
+    <line x1="0" y1="-14" x2="0" y2="-6"  stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" transform="rotate(0)"/>
+    <line x1="0" y1="-14" x2="0" y2="-6"  stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" transform="rotate(22.5)"/>
+    <line x1="0" y1="-14" x2="0" y2="-6"  stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" transform="rotate(45)"/>
+    <line x1="0" y1="-14" x2="0" y2="-6"  stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" transform="rotate(67.5)"/>
+    <line x1="0" y1="-14" x2="0" y2="-6"  stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" transform="rotate(90)"/>
+    <line x1="0" y1="-14" x2="0" y2="-6"  stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" transform="rotate(112.5)"/>
+    <line x1="0" y1="-14" x2="0" y2="-6"  stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" transform="rotate(135)"/>
+    <line x1="0" y1="-14" x2="0" y2="-6"  stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" transform="rotate(157.5)"/>
+    <line x1="0" y1="-14" x2="0" y2="-6"  stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" transform="rotate(180)"/>
+    <line x1="0" y1="-14" x2="0" y2="-6"  stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" transform="rotate(202.5)"/>
+    <line x1="0" y1="-14" x2="0" y2="-6"  stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" transform="rotate(225)"/>
+    <line x1="0" y1="-14" x2="0" y2="-6"  stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" transform="rotate(247.5)"/>
+    <line x1="0" y1="-14" x2="0" y2="-6"  stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" transform="rotate(270)"/>
+    <line x1="0" y1="-14" x2="0" y2="-6"  stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" transform="rotate(292.5)"/>
+    <line x1="0" y1="-14" x2="0" y2="-6"  stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" transform="rotate(315)"/>
+    <line x1="0" y1="-14" x2="0" y2="-6"  stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" transform="rotate(337.5)"/>
+    <!-- Centre dot -->
+    <circle cx="0" cy="0" r="2.5" fill="#FFFFFF"/>
+  </g>
+</svg>

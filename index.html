@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ISS UK & Ireland — IFS Use Case Analysis</title>
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root {
+  --bg:            #0A0A0A;
+  --surface:       #111111;
+  --surface-hi:    #1A1A1A;
+  --border:        #1E1E1E;
+  --border-sub:    #2A2A2A;
+  --txt:           #FFFFFF;
+  --txt2:          #888888;
+  --txt3:          #555555;
+  --acc:           #7C3AED;
+  --acc-br:        #9B5CF6;
+  --acc-m:         #3B1F75;
+  --acc-glow:      rgba(124,58,237,0.25);
+  --ok:            #22C55E;
+  --warn:          #F59E0B;
+  --warn-bg:       #2D1F00;
+  --err:           #EF4444;
+  --rec-bg:        rgba(239,68,68,0.15);
+  --ui:  'SF Pro Display','Inter','Helvetica Neue',Arial,sans-serif;
+  --mono:'SF Mono','Fira Code',Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);font-family:var(--ui);color:var(--txt)}
+
+/* ============================================================
+   PAGE TAB BAR
+   ============================================================ */
+.pg-tabs{
+  position:sticky;top:0;z-index:400;
+  background:rgba(10,10,10,.96);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  display:flex;padding:0 20px;
+}
+.pg-tab{
+  padding:15px 24px;
+  font-family:var(--ui);font-size:14px;font-weight:500;
+  color:var(--txt2);background:none;border:none;
+  border-bottom:2px solid transparent;
+  cursor:pointer;transition:color 200ms,border-color 200ms;
+  letter-spacing:-.2px;white-space:nowrap;
+}
+.pg-tab.on{color:var(--txt);border-bottom-color:var(--acc-br)}
+.pg-tab:hover{color:var(--txt)}
+.tab-pane{display:none}.tab-pane.on{display:block}
+
+/* ============================================================
+   ANALYSIS STYLES (unchanged)
+   ============================================================ */
+.wrap{padding:0 0 2rem}
+.hdr{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;gap:12px}
+.hdr-t{font-size:17px;font-weight:600;letter-spacing:-.3px}
+.hdr-s{font-size:12px;color:var(--txt2);margin-top:1px}
+.body{padding:20px}
+.sec{margin-bottom:24px}
+.sec-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc-br);margin-bottom:10px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:8px}
+.ct{font-size:14px;font-weight:600;margin-bottom:8px;letter-spacing:-.2px}
+.cb{font-size:13px;color:var(--txt2);line-height:1.65}
+.pill{display:inline-block;font-size:11px;font-weight:500;padding:3px 10px;border-radius:999px;margin:4px 4px 0 0}
+.pa{background:var(--acc-m);color:var(--acc-br)}.ps{background:rgba(34,197,94,.12);color:#4ade80}
+.pm{background:var(--warn-bg);color:var(--warn)}.pr{background:rgba(239,68,68,.12);color:#f87171}
+.pg{background:#1A1A1A;color:var(--txt2);border:1px solid var(--border-sub)}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px}
+.sc{background:var(--surface-hi);border-radius:10px;padding:12px;border:1px solid var(--border-sub)}
+.st{font-size:11px;font-weight:600;margin-bottom:5px;letter-spacing:.02em}
+.sb{font-size:12px;color:var(--txt2);line-height:1.55}
+hr.div{border:none;border-top:1px solid var(--border);margin:20px 0}
+.bl-p{border-left:2px solid var(--acc-br);padding-left:12px}
+.bl-g{border-left:2px solid var(--ok);padding-left:12px}
+.bl-r{border-left:2px solid var(--err);padding-left:12px}
+.mn{font-size:26px;font-weight:700;color:var(--acc-br);margin-bottom:4px;letter-spacing:-.5px}
+.ml{font-size:11px;color:var(--txt2);line-height:1.45}
+.ai-dots{display:flex;gap:5px;align-items:center;margin-top:10px}
+.ai-d{width:9px;height:9px;border-radius:50%}
+.ai-on{background:var(--acc-br)}.ai-off{background:var(--border-sub)}
+.ai-lbl{font-size:11px;color:var(--txt3);margin-left:6px;font-family:var(--mono)}
+.tag-row{margin-top:10px}
+.badge-sys{display:inline-flex;align-items:center;gap:5px;background:var(--surface-hi);border:1px solid var(--border-sub);border-radius:999px;padding:4px 10px;font-size:11px;font-weight:500;color:var(--txt2);margin:4px 4px 0 0}
+.bd{width:6px;height:6px;border-radius:50%}
+
+/* ============================================================
+   RESOLVE DEMO OUTER
+   ============================================================ */
+.rdw{background:#060608;min-height:calc(100vh - 52px);padding:44px 24px 72px}
+.rdw-head{text-align:center;margin-bottom:48px}
+.rdw-eye{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--acc-br);margin-bottom:10px}
+.rdw-title{font-size:28px;font-weight:700;color:var(--txt);letter-spacing:-.6px;margin-bottom:8px}
+.rdw-sub{font-size:13px;color:var(--txt2);line-height:1.6;max-width:520px;margin:0 auto}
+.rdw-layout{display:flex;align-items:flex-start;justify-content:center;gap:52px;max-width:900px;margin:0 auto}
+
+/* ============================================================
+   PHONE SHELL
+   ============================================================ */
+.ph-col{flex:0 0 auto}
+.ph-out{
+  width:320px;height:692px;
+  background:linear-gradient(165deg,#2C2C2E 0%,#1C1C1E 55%,#141416 100%);
+  border-radius:52px;position:relative;
+  box-shadow:0 0 0 1px rgba(255,255,255,.07),0 0 0 3px #0D0D0F,0 0 0 4px rgba(255,255,255,.03),0 52px 96px rgba(0,0,0,.85);
+}
+/* volume buttons */
+.ph-out::before{content:'';position:absolute;left:-3px;top:110px;width:3px;height:34px;background:#2C2C2E;border-radius:2px 0 0 2px;box-shadow:0 44px 0 #2C2C2E,0 88px 0 #2C2C2E}
+/* power button */
+.ph-out::after{content:'';position:absolute;right:-3px;top:155px;width:3px;height:72px;background:#2C2C2E;border-radius:0 2px 2px 0}
+.ph-scr{position:absolute;top:10px;left:10px;right:10px;bottom:10px;border-radius:44px;overflow:hidden;background:#000}
+.dyn-isl{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:120px;height:34px;background:#000;border-radius:20px;z-index:500;pointer-events:none}
+.home-ind{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);width:130px;height:5px;background:rgba(255,255,255,.28);border-radius:3px;z-index:500;pointer-events:none}
+
+/* ============================================================
+   APP FRAMES
+   ============================================================ */
+.af-wrap{position:absolute;inset:0;overflow:hidden;background:#0A0A0A}
+.af{
+  position:absolute;inset:0;
+  opacity:0;transform:scale(.96) translateY(12px);
+  transition:opacity 550ms cubic-bezier(.22,1,.36,1),transform 550ms cubic-bezier(.22,1,.36,1);
+  pointer-events:none;overflow:hidden;display:flex;flex-direction:column;
+}
+.af.on{opacity:1;transform:scale(1) translateY(0);pointer-events:auto}
+.af.out{opacity:0;transform:scale(1.03) translateY(-10px);pointer-events:none}
+
+/* iOS status bar */
+.ios-bar{height:50px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 26px 8px;flex-shrink:0;z-index:10}
+.ios-time{font-size:15px;font-weight:600;color:#fff;letter-spacing:-.3px}
+.ios-icons{display:flex;align-items:center;gap:6px}
+
+/* Resolve wordmark header */
+.r-hdr{display:flex;align-items:center;justify-content:space-between;padding:0 20px 10px;flex-shrink:0;height:52px}
+.r-wm{font-family:var(--ui);font-size:22px;font-weight:700;color:#fff;letter-spacing:-.5px}
+.r-ava{width:36px;height:36px;border-radius:50%;background:#1A1A1A;border:1px solid #2A2A2A;display:flex;align-items:center;justify-content:center}
+
+/* ============================================================
+   STARBURST
+   ============================================================ */
+@keyframes sbspin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.sbspin{animation:sbspin 2.4s linear infinite;transform-origin:center;display:inline-block}
+
+/* ============================================================
+   FRAME 1 — CAPTURE
+   ============================================================ */
+.f1{background:#000}
+.f1 .ios-bar,.f1 .r-hdr{background:rgba(0,0,0,.45);backdrop-filter:blur(4px)}
+.mode-tabs{display:flex;gap:3px;padding:6px 14px 8px;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);flex-shrink:0}
+.mt{flex:1;padding:9px 0;border-radius:20px;border:none;font-family:var(--ui);font-size:11px;font-weight:500;cursor:pointer;white-space:nowrap}
+.mt.on{background:var(--acc);color:#fff}.mt:not(.on){background:transparent;color:rgba(255,255,255,.45)}
+.vf{flex:1;position:relative;overflow:hidden}
+.vf svg{width:100%;height:100%;display:block}
+.cam-tl,.cam-tr,.cam-bl,.cam-br{position:absolute;width:22px;height:22px;border-color:rgba(255,255,255,.85);border-style:solid;pointer-events:none}
+.cam-tl{top:18px;left:18px;border-width:2px 0 0 2px;border-radius:3px 0 0 0}
+.cam-tr{top:18px;right:18px;border-width:2px 2px 0 0;border-radius:0 3px 0 0}
+.cam-bl{bottom:18px;left:18px;border-width:0 0 2px 2px;border-radius:0 0 0 3px}
+.cam-br{bottom:18px;right:18px;border-width:0 2px 2px 0;border-radius:0 0 3px 0}
+.xhair{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:28px;height:28px;pointer-events:none}
+.xhair::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(255,255,255,.55);transform:translateY(-50%)}
+.xhair::after{content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(255,255,255,.55);transform:translateX(-50%)}
+.vf-hint{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:11px;color:rgba(255,255,255,.55);font-family:var(--mono);letter-spacing:.04em}
+.cap-bar{height:98px;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:space-between;padding:0 36px;flex-shrink:0}
+.cap-side{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.1);border:none;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.7)}
+.cap-main{width:68px;height:68px;border-radius:50%;background:#fff;border:3px solid rgba(255,255,255,.55);box-shadow:0 0 0 6px rgba(255,255,255,.14)}
+
+/* ============================================================
+   FRAME 2 — ANALYZING
+   ============================================================ */
+.f2{background:var(--bg)}
+.an-txt{padding:0 20px 8px;flex-shrink:0}
+.an-hl{font-family:var(--mono);font-size:28px;font-weight:600;color:#fff;letter-spacing:.02em}
+.aim{flex:1;position:relative;overflow:visible}
+.aim svg{width:100%;height:100%;display:block}
+/* scan line */
+@keyframes scan{0%{top:0}100%{top:100%}}
+.scan-line{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(155,92,246,.6),transparent);pointer-events:none;animation:scan 3s linear infinite;z-index:5}
+/* Analysis log overlay */
+.a-log{position:absolute;top:12px;left:12px;display:flex;flex-direction:column;gap:4px;z-index:20}
+.a-ll{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);padding:4px 8px;border-radius:6px;color:rgba(255,255,255,.4)}
+.a-ll.done{color:rgba(255,255,255,.38)}
+.a-ll.act{color:#fff;animation:logblink 1.3s ease-in-out infinite alternate}
+@keyframes logblink{from{opacity:.7}to{opacity:1}}
+.lck{color:#22C55E;font-size:9px}.lrng{width:9px;height:9px;border:1.5px solid rgba(155,92,246,.3);border-top-color:#9B5CF6;border-radius:50%;animation:spinsm .75s linear infinite;flex-shrink:0}
+@keyframes spinsm{to{transform:rotate(360deg)}}
+/* Spinning starburst on image */
+.a-sb{position:absolute;top:12px;right:12px;z-index:20}
+/* Annotation chips — positioned on the FRAME (not just the image) */
+.ann{position:absolute;background:rgba(8,8,8,.9);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:7px 13px;font-family:var(--mono);font-size:10.5px;color:#fff;white-space:nowrap;backdrop-filter:blur(10px);z-index:30;display:flex;align-items:center;gap:6px}
+.ann-l{left:-6px;animation:ann-in-l 500ms cubic-bezier(.22,1,.36,1) both}
+.ann-r{right:-6px;animation:ann-in-r 500ms cubic-bezier(.22,1,.36,1) both}
+@keyframes ann-in-l{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}
+@keyframes ann-in-r{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+.ann-d1{animation-delay:.4s}.ann-d2{animation-delay:1s}.ann-d3{animation-delay:1.7s}.ann-d4{animation-delay:2.4s}
+.adot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* ============================================================
+   FRAME 3 — DIAGNOSIS
+   ============================================================ */
+.f3{background:var(--bg)}
+.diag-scr{flex:1;overflow-y:auto;padding:0 14px 14px;scrollbar-width:none}
+.diag-scr::-webkit-scrollbar{display:none}
+.dlbl{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--acc-br);margin:12px 0 6px}
+.asset-row{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px;margin-bottom:2px}
+.asset-ico{width:36px;height:36px;border-radius:8px;background:var(--acc-m);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.asset-nm{font-size:12px;font-weight:600;color:#fff;letter-spacing:-.2px}
+.asset-mt{font-size:10.5px;color:var(--txt2);margin-top:1px}
+.fc{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px;margin-bottom:7px;position:relative;overflow:hidden}
+.fc::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+.fc.hi::before{background:#EF4444}.fc.md::before{background:#F59E0B}
+.fc-sev{font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;margin-bottom:4px}
+.fc-sev.hi{color:#F87171}.fc-sev.md{color:#FCD34D}
+.fc-nm{font-size:13px;font-weight:600;color:#fff;letter-spacing:-.3px;margin-bottom:5px}
+.fc-dt{font-size:11.5px;color:var(--txt2);line-height:1.5;margin-bottom:8px}
+.fc-tags{display:flex;flex-wrap:wrap;gap:4px}
+.fc-tag{display:inline-flex;align-items:center;gap:4px;background:#1A1A1A;border:1px solid #2A2A2A;border-radius:20px;padding:3px 9px;font-size:10px;color:#777;font-family:var(--mono)}
+.fc-dot{width:5px;height:5px;border-radius:50%;background:var(--acc-br)}
+.cta-btn{width:100%;height:46px;background:var(--acc);border:none;border-radius:12px;color:#fff;font-family:var(--ui);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:-.2px;margin-top:6px}
+.ph-nav{height:72px;background:var(--surface);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;padding-bottom:14px;flex-shrink:0}
+.pni{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9.5px;color:var(--txt3);cursor:pointer}
+.pni.on{color:var(--acc-br)}
+
+/* ============================================================
+   FRAME 4 — ASSIGN
+   ============================================================ */
+.f4{background:var(--bg)}
+.asgn-hdr{display:flex;align-items:center;gap:10px;padding:0 16px 12px;border-bottom:1px solid var(--border);flex-shrink:0}
+.bk-btn{width:32px;height:32px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.asgn-ttl{font-size:15px;font-weight:600;color:#fff;letter-spacing:-.3px}
+.asgn-body{flex:1;overflow-y:auto;padding:12px 14px;scrollbar-width:none;display:flex;flex-direction:column;gap:11px}
+.asgn-body::-webkit-scrollbar{display:none}
+.wo-card{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:11px 13px}
+.wo-r{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.wo-r:last-child{margin-bottom:0}
+.wo-l{font-size:10.5px;color:var(--txt2)}.wo-v{font-size:11.5px;font-weight:500;color:#fff}
+.hi-badge{display:inline-flex;align-items:center;gap:4px;background:var(--warn-bg);color:var(--warn);border-radius:20px;padding:2px 8px;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+.asec{font-family:var(--mono);font-size:9px;color:var(--acc-br);letter-spacing:.13em;text-transform:uppercase;margin-bottom:5px}
+.eng-c{display:flex;align-items:center;gap:11px;background:var(--surface);border:1.5px solid var(--border);border-radius:11px;padding:11px 12px;margin-bottom:5px;cursor:pointer;transition:border-color 200ms,background 200ms}
+.eng-c.sel{border-color:var(--acc);background:rgba(124,58,237,.09)}
+.eng-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.ea1{background:rgba(99,102,241,.22);color:#818CF8}.ea2{background:rgba(16,185,129,.18);color:#34D399}
+.eng-nm{font-size:12px;font-weight:600;color:#fff}
+.eng-mt{font-size:10.5px;color:var(--txt2);margin-top:1px}
+.eng-tag{margin-left:auto;font-size:10px;font-family:var(--mono)}
+.eng-tag.on{color:var(--ok)}.eng-tag.off{color:var(--txt2)}
+.sel-ring{width:18px;height:18px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sch-row{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:11px 13px;display:flex;align-items:center;justify-content:space-between}
+.sch-l{font-size:10.5px;color:var(--txt2)}.sch-v{font-size:12px;font-weight:500;color:#fff}
+.asgn-cta{padding:10px 14px 12px;flex-shrink:0}
+.asgn-cta-btn{width:100%;height:46px;background:var(--acc);border:none;border-radius:12px;color:#fff;font-family:var(--ui);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+
+/* ============================================================
+   FRAME 5 — CONFIRMED
+   ============================================================ */
+.f5{background:var(--bg);padding:0 20px 20px}
+.conf-hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center}
+.chk-ring{width:72px;height:72px;border-radius:50%;background:rgba(34,197,94,.12);border:2px solid #22C55E;display:flex;align-items:center;justify-content:center}
+@keyframes chkpop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+.chk-ring.animate{animation:chkpop 550ms cubic-bezier(.34,1.56,.64,1) both}
+.conf-title{font-size:20px;font-weight:700;color:#fff;letter-spacing:-.5px}
+.conf-wo{font-family:var(--mono);font-size:12px;color:var(--acc-br);letter-spacing:.1em}
+.conf-sub{font-size:12px;color:var(--txt2);line-height:1.5}
+.conf-rows{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px}
+.cr{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border);font-size:11.5px}
+.cr:last-child{border-bottom:none}
+.cr-ic{width:18px;text-align:center;flex-shrink:0;font-size:12px}
+.cr-tx{color:var(--txt2);flex:1}.cr-vl{color:#fff;font-weight:500;font-size:11.5px}
+.cr-vl.ok{color:#22C55E}
+.conf-btns{display:flex;gap:9px;width:100%}
+.cb-out{flex:1;height:43px;background:transparent;border:1px solid var(--border);border-radius:10px;color:var(--txt2);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--ui)}
+.cb-sol{flex:1.5;height:43px;background:var(--acc);border:none;border-radius:10px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--ui)}
+
+/* ============================================================
+   STEP TRACKER (info column)
+   ============================================================ */
+.info-col{flex:1;min-width:0;max-width:380px;padding-top:14px}
+.step-track{display:flex;flex-direction:column}
+.si{display:flex;gap:14px;padding-bottom:24px;position:relative;cursor:pointer}
+.si:last-child{padding-bottom:0}
+.si::before{content:'';position:absolute;left:15px;top:33px;bottom:0;width:1px;background:var(--border)}
+.si:last-child::before{display:none}
+.si-dot{width:32px;height:32px;border-radius:50%;background:var(--surface);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:600;color:var(--txt3);transition:all 350ms;position:relative;z-index:1}
+.si.cur .si-dot{background:var(--acc);border-color:var(--acc-br);color:#fff;box-shadow:0 0 18px rgba(124,58,237,.5)}
+.si.dn .si-dot{background:rgba(34,197,94,.12);border-color:#22C55E;color:#22C55E}
+.si-body{padding-top:5px;min-width:0}
+.si-nm{font-size:14px;font-weight:600;color:var(--txt3);letter-spacing:-.2px;margin-bottom:3px;transition:color 300ms}
+.si.cur .si-nm{color:var(--txt)}.si.dn .si-nm{color:var(--txt2)}
+.si-dc{font-size:12px;color:var(--txt3);line-height:1.55;overflow:hidden;max-height:0;opacity:0;transition:max-height 450ms ease,opacity 350ms}
+.si.cur .si-dc{max-height:100px;opacity:1}
+.si-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
+.si-tag{background:var(--acc-m);color:var(--acc-br);border-radius:20px;padding:2px 9px;font-size:9.5px;font-family:var(--mono)}
+
+/* ============================================================
+   PROGRESS DOTS
+   ============================================================ */
+.prog-area{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:44px}
+.prog-dots{display:flex;gap:7px}
+.pd{width:8px;height:8px;border-radius:50%;background:var(--border-sub);transition:all 300ms}
+.pd.on{background:var(--acc-br);width:22px;border-radius:4px}
+.prog-lbl{font-family:var(--mono);font-size:10.5px;color:var(--txt3);letter-spacing:.06em;text-align:center}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:780px){
+  .rdw-layout{flex-direction:column;align-items:center;gap:36px}
+  .info-col{width:100%;max-width:320px;padding-top:0}
+  .rdw{padding:28px 14px 48px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     PAGE TABS
+     ============================================================ -->
+<div class="pg-tabs">
+  <button class="pg-tab on"  onclick="setTab('analysis',this)">ISS Analysis</button>
+  <button class="pg-tab"     onclick="setTab('resolve',this)">Resolve — Live Demo</button>
+</div>
+
+
+<!-- ============================================================
+     TAB 1: ANALYSIS
+     ============================================================ -->
+<div id="pane-analysis" class="tab-pane on">
+<div class="wrap">
+  <div class="hdr">
+    <svg width="36" height="36" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#1A1A1A"/><g transform="translate(24,24)"><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(0)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(22.5)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(45)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(67.5)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(90)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(112.5)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(135)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(157.5)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(180)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(202.5)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(225)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(247.5)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(270)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(292.5)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(315)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(337.5)"/><circle cx="0" cy="0" r="3" fill="#9B5CF6"/></g></svg>
+    <div><div class="hdr-t">ISS UK &amp; Ireland — Use Case Analysis</div><div class="hdr-s">Powered by Nexus Black · Resolve</div></div>
+  </div>
+  <div class="body">
+    <div class="sec">
+      <div class="sec-lbl">// Company profile</div>
+      <div class="card"><div class="ct">ISS UK &amp; Ireland — Integrated Facilities Management at enterprise scale</div><div class="cb">ISS is one of the world's largest FM providers, operating across government, healthcare, transport, commercial real estate, education, and retail in the UK and Ireland. Services span cleaning, catering, technical engineering (M&amp;E), planned and reactive building maintenance, security, and grounds management. Tens of thousands of field-based placemakers deployed daily across hundreds of client sites via a hybrid model of directly employed engineers and a managed subcontractor network.<br><br>Major contracts include the DWP (£135M, 7-year IFM), Defra, the FCDO (£34M, 5-year), Northern Trains (477 sites), Virgin Media O2, Unibail-Rodamco-Westfield, and Warwick Hospital.</div><div class="tag-row"><span class="pill pg">Government</span><span class="pill pg">Healthcare</span><span class="pill pg">Transport</span><span class="pill pg">Commercial RE</span><span class="pill pg">Retail</span><span class="pill pg">Education</span></div></div>
+      <div class="g2">
+        <div class="card"><div class="ct">AI maturity</div><div class="cb">Moderate. ISS has invested in building management systems, sustainability analytics, and has publicly explored AI's role in the built environment — including a CIO-led AI white paper series. However, AI adoption in engineering and fault diagnosis remains limited. Field decisions still rely heavily on individual technician expertise rather than AI-assisted diagnostic workflows.</div><div class="ai-dots"><div class="ai-d ai-on"></div><div class="ai-d ai-on"></div><div class="ai-d ai-on"></div><div class="ai-d ai-off"></div><div class="ai-d ai-off"></div><span class="ai-lbl">Moderate — FM-led, not AI-led in engineering</span></div></div>
+        <div class="card"><div class="ct">System category fit</div><div class="cb">ISS sits at the intersection of FSM and EAM. Field dispatch, mobile work orders, and subcontractor management are FSM in nature; asset maintenance schedules, compliance tracking, and audit-trail generation across client-owned buildings bring EAM characteristics. Regulatory complexity on public sector estates elevates the compliance dimension beyond typical FSM scope.</div><div class="tag-row"><span class="badge-sys"><span class="bd" style="background:#9B5CF6"></span>Primary: FSM</span><span class="badge-sys"><span class="bd" style="background:#22C55E"></span>Secondary: EAM</span><span class="badge-sys"><span class="bd" style="background:#F59E0B"></span>AI tooling: Resolve</span></div></div>
+      </div>
+    </div>
+    <hr class="div">
+    <div class="sec">
+      <div class="sec-lbl">// Use case &amp; problem</div>
+      <div class="card"><div class="ct">Multi-site IFM delivery across complex, regulated estates</div><div class="cb">ISS manages thousands of assets and work orders across hundreds of client sites simultaneously — a combination of planned preventive maintenance (PPM), reactive fault response, and compliance-driven inspections covering M&amp;E, fire safety, lifts, and building fabric. The operational challenge is structurally complex: a hybrid workforce of directly employed engineers and subcontractors, strict SLA commitments baked into government contracts, and a mandatory requirement to evidence compliance across regulated estates including healthcare and central government.</div></div>
+      <div class="g2">
+        <div class="card bl-r"><div class="ct">Operational friction</div><div class="cb">Disconnected scheduling, parts inventory, and subcontractor visibility create repeat call-outs and SLA exposure. Engineer performance varies significantly across a large, distributed workforce of mixed seniority — fault diagnosis relies on individual knowledge rather than a structured, repeatable process.</div><div class="tag-row"><span class="pill pr">SLA penalty risk</span><span class="pill pr">Repeat call-outs</span><span class="pill pr">Parts availability</span></div></div>
+        <div class="card bl-r"><div class="ct">Compliance &amp; knowledge risk</div><div class="cb">Regulated estates require auditable evidence of every maintenance action. As ISS mobilises large new contracts (DWP, Defra) and rapidly onboards new workforces, standardising engineer quality and ensuring consistent compliance documentation becomes operationally critical at scale.</div><div class="tag-row"><span class="pill pr">Audit trail gaps</span><span class="pill pr">Workforce onboarding</span><span class="pill pr">Knowledge dependency</span></div></div>
+      </div>
+    </div>
+    <hr class="div">
+    <div class="sec">
+      <div class="sec-lbl">// Value proposition</div>
+      <div class="card" style="margin-bottom:8px"><div class="ct bl-g">Operations layer — connected field management</div><div class="cb" style="margin-top:8px">A unified platform connecting job scheduling, M&amp;E parts inventory, subcontractor dispatch, compliance record-keeping, and audit trail generation across all client sites. Planners gain real-time visibility across the entire hybrid workforce — directly employed and subcontracted — eliminating the data fragmentation that drives SLA breaches and reactive inefficiencies.</div><div class="tag-row"><span class="pill ps">Scheduling &amp; dispatch</span><span class="pill ps">Subcontractor management</span><span class="pill ps">Parts inventory integration</span><span class="pill ps">Compliance documentation</span></div></div>
+      <div class="card"><div class="ct bl-p">Field layer — Resolve AI fault diagnosis</div><div class="cb" style="margin-top:8px">Engineers use Resolve to capture faults via video and audio, receive AI-assisted diagnosis, and follow guided repair workflows — reducing reliance on individual expertise and standardising quality across a large, geographically dispersed team. Resolve integrates a rich set of contextual data to guide engineers at the exact point of work:</div><div class="g2" style="margin-top:10px"><div class="sc"><div class="st">Knowledge integration</div><div class="sb">ESM service history, equipment manuals, standard operating procedures (SOPs), and O&amp;M documentation surfaced in-context — so engineers have the right information at the moment of fault, not back at the depot.</div></div><div class="sc"><div class="st">Technical data integration</div><div class="sb">Building schematics, asset configuration data, and live sensor and BMS readings fed into the diagnostic workflow — enabling AI-assisted root cause identification before the engineer physically intervenes.</div></div></div><div class="tag-row"><span class="pill pa">AI fault diagnosis</span><span class="pill pa">ESM &amp; service history</span><span class="pill pa">Schematics &amp; manuals</span><span class="pill pa">Sensor &amp; BMS data</span><span class="pill pa">SOPs &amp; compliance guides</span></div></div>
+    </div>
+    <hr class="div">
+    <div class="sec">
+      <div class="sec-lbl">// ROI &amp; outcomes</div>
+      <div class="g3"><div class="card"><div class="mn">↑</div><div class="ml">First-time fix rate — directly reduces contractual SLA penalty exposure across multi-year government contracts</div></div><div class="card"><div class="mn">↓</div><div class="ml">Repeat call-outs — fewer return visits reduces cost per job and frees engineer capacity for additional work orders</div></div><div class="card"><div class="mn">↓</div><div class="ml">Compliance risk — audit-ready records generated automatically on regulated NHS and government estates</div></div></div>
+      <div class="g2" style="margin-top:8px"><div class="card"><div class="ct">Contract-level financial case</div><div class="cb">In IFM contracts, SLA failure triggers defined financial penalties — making the ROI case more precise than in typical service contexts. Every improvement in first-time fix rate has a directly quantifiable downside avoided. With ISS managing contracts worth hundreds of millions across multi-year terms, even marginal SLA improvements carry material financial impact.</div></div><div class="card"><div class="ct">Workforce scale &amp; onboarding</div><div class="cb">As ISS rapidly mobilises large new contract workforces — DWP (2025), Defra — Resolve accelerates onboarding by embedding knowledge into the engineer's workflow. The gap between a senior M&amp;E specialist and a less experienced operative narrows when both are guided by the same AI-assisted diagnostic process, SOPs, schematics, and live sensor data.</div></div></div>
+    </div>
+  </div>
+</div>
+</div><!-- /pane-analysis -->
+
+
+<!-- ============================================================
+     TAB 2: RESOLVE DEMO
+     ============================================================ -->
+<div id="pane-resolve" class="tab-pane">
+<div class="rdw">
+
+  <div class="rdw-head">
+    <div class="rdw-eye">// Field AI · Interactive Prototype</div>
+    <div class="rdw-title">Resolve in Action</div>
+    <div class="rdw-sub">Fan coil unit fault · DWP Manchester · FCU-B3-22 — a 5-step sequence from image capture through AI diagnosis to engineer assignment, playing on repeat.</div>
+  </div>
+
+  <div class="rdw-layout">
+
+    <!-- ══════════════════════════════
+         PHONE SHELL
+         ══════════════════════════════ -->
+    <div class="ph-col">
+      <div class="ph-out">
+        <div class="dyn-isl"></div>
+        <div class="ph-scr">
+          <div class="af-wrap" id="afWrap">
+
+            <!-- ───────────────────
+                 FRAME 1 — CAPTURE
+                 ─────────────────── -->
+            <div class="af f1 on" id="fr1">
+              <!-- iOS status bar -->
+              <div class="ios-bar">
+                <span class="ios-time">9:41</span>
+                <div class="ios-icons">
+                  <svg width="17" height="12" viewBox="0 0 17 12" fill="white" opacity=".85"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="2" width="3" height="10" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".28"/></svg>
+                  <svg width="15" height="12" viewBox="0 0 15 12" fill="none" stroke="white" stroke-width="1.5" opacity=".85"><path d="M1 9.5c2.5-4 10.5-4 13 0"/><path d="M3.5 11.5c1.5-2.5 6.5-2.5 8 0"/><circle cx="7.5" cy="11.5" r=".8" fill="white" stroke="none"/></svg>
+                  <svg width="25" height="12" viewBox="0 0 25 12" fill="none" opacity=".85"><rect x=".5" y=".5" width="21" height="11" rx="3.5" stroke="white" stroke-opacity=".35"/><rect x="22.5" y="3.5" width="2" height="5" rx="1" fill="white" fill-opacity=".4"/><rect x="1.5" y="1.5" width="17" height="9" rx="2.5" fill="white"/></svg>
+                </div>
+              </div>
+              <!-- Resolve header -->
+              <div class="r-hdr">
+                <span class="r-wm">Resolve</span>
+                <div class="r-ava"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+              </div>
+              <!-- Mode tabs — Video & Image always leads -->
+              <div class="mode-tabs">
+                <button class="mt on">Video &amp; Image</button>
+                <button class="mt">Audio &amp; Voice</button>
+                <button class="mt">Text</button>
+              </div>
+              <!-- Camera viewfinder with FCU -->
+              <div class="vf">
+                <svg viewBox="0 0 296 370" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+                  <defs>
+                    <radialGradient id="v1-vgn" cx="50%" cy="50%" r="70%"><stop offset="25%" stop-color="transparent"/><stop offset="100%" stop-color="rgba(0,0,0,.75)"/></radialGradient>
+                    <linearGradient id="v1-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#303232"/><stop offset="100%" stop-color="#1E1F1F"/></linearGradient>
+                    <pattern id="v1-fin" x="0" y="0" width="5.5" height="1" patternUnits="userSpaceOnUse"><rect x="0" y="0" width="4" height="1" fill="#2D2D2D"/><rect x="4" y="0" width="1.5" height="1" fill="#111"/></pattern>
+                    <pattern id="v1-foul" x="0" y="0" width="5.5" height="1" patternUnits="userSpaceOnUse"><rect x="0" y="0" width="4" height="1" fill="#2B1E0D"/><rect x="4" y="0" width="1.5" height="1" fill="#0D0900"/></pattern>
+                    <pattern id="v1-msh" x="0" y="0" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#181818"/><rect x="0" y="0" width="5.2" height="5.2" fill="#1D1D1D"/><rect x="5.2" y="0" width="1.8" height="7" fill="#111"/><rect x="0" y="5.2" width="7" height="1.8" fill="#111"/></pattern>
+                    <filter id="v1-glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                    <filter id="v1-blur"><feGaussianBlur stdDeviation="5"/></filter>
+                  </defs>
+                  <!-- Wall -->
+                  <rect width="296" height="370" fill="#0C0C0C"/>
+                  <line x1="0" y1="74" x2="296" y2="74" stroke="#161616" stroke-width=".7"/>
+                  <line x1="0" y1="148" x2="296" y2="148" stroke="#161616" stroke-width=".7"/>
+                  <line x1="0" y1="222" x2="296" y2="222" stroke="#161616" stroke-width=".7"/>
+                  <line x1="0" y1="296" x2="296" y2="296" stroke="#161616" stroke-width=".7"/>
+                  <!-- Floor -->
+                  <rect x="0" y="310" width="296" height="60" fill="#0A0A0A"/>
+                  <line x1="0" y1="310" x2="296" y2="310" stroke="#1C1C1C"/>
+                  <!-- Pipes (right wall) -->
+                  <rect x="252" y="0" width="7" height="311" fill="#181818" stroke="#222" stroke-width=".5"/>
+                  <rect x="263" y="0" width="5" height="311" fill="#161616" stroke="#1E1E1E" stroke-width=".5"/>
+                  <!-- Corrosion at pipe joint -->
+                  <ellipse cx="255" cy="205" rx="13" ry="5" fill="rgba(150,85,18,.65)" filter="url(#v1-blur)"/>
+                  <ellipse cx="267" cy="205" rx="9" ry="4" fill="rgba(130,70,15,.55)" filter="url(#v1-blur)"/>
+                  <!-- Water stain on wall below unit -->
+                  <rect x="150" y="235" width="85" height="72" rx="4" fill="rgba(18,15,12,.6)" filter="url(#v1-blur)"/>
+                  <!-- Unit shadow -->
+                  <rect x="32" y="102" width="224" height="140" rx="8" fill="rgba(0,0,0,.6)" transform="translate(4,7)" filter="url(#v1-blur)"/>
+                  <!-- FCU body -->
+                  <rect x="30" y="96" width="226" height="138" rx="7" fill="url(#v1-bg)" stroke="#383838" stroke-width="1"/>
+                  <!-- Intake panel -->
+                  <rect x="30" y="96" width="226" height="30" rx="6" fill="#242424" stroke="#383838" stroke-width=".5"/>
+                  <!-- Intake mesh -->
+                  <rect x="35" y="99" width="188" height="23" rx="3" fill="url(#v1-msh)"/>
+                  <rect x="35" y="99" width="188" height="23" rx="3" fill="rgba(38,28,12,.4)"/>
+                  <!-- Control display -->
+                  <rect x="228" y="101" width="24" height="19" rx="3" fill="#0D0D0D" stroke="#252525"/>
+                  <text x="240" y="112" font-family="Consolas,monospace" font-size="6" fill="#EF4444" text-anchor="middle">E08</text>
+                  <text x="240" y="119" font-family="Consolas,monospace" font-size="4.5" fill="#444" text-anchor="middle">ERR</text>
+                  <!-- Fault LED -->
+                  <circle cx="47" cy="105" r="5.5" fill="#EF4444" filter="url(#v1-glow)"/>
+                  <circle cx="47" cy="105" r="10" fill="rgba(239,68,68,.15)"/>
+                  <!-- OK LED (off) -->
+                  <circle cx="60" cy="105" r="4" fill="#1A1A1A" stroke="#2A2A2A"/>
+                  <!-- Coil fins: clean upper portion -->
+                  <rect x="33" y="128" width="215" height="48" fill="url(#v1-fin)"/>
+                  <!-- Coil fins: fouled lower portion -->
+                  <rect x="33" y="176" width="215" height="50" fill="url(#v1-foul)"/>
+                  <!-- Fouling amber blotch -->
+                  <ellipse cx="148" cy="193" rx="80" ry="22" fill="rgba(140,80,15,.3)" filter="url(#v1-blur)"/>
+                  <ellipse cx="95" cy="185" rx="45" ry="16" fill="rgba(120,65,12,.35)" filter="url(#v1-blur)"/>
+                  <!-- Outlet grille frame -->
+                  <rect x="30" y="226" width="226" height="8" rx="2" fill="#1C1C1C" stroke="#2A2A2A" stroke-width=".5"/>
+                  <!-- Outlet louvers -->
+                  <rect x="32" y="236" width="221" height="4" rx="1" fill="#1E1E1E"/>
+                  <rect x="32" y="242" width="221" height="4" rx="1" fill="#1E1E1E"/>
+                  <rect x="32" y="248" width="221" height="4" rx="1" fill="#1E1E1E"/>
+                  <!-- Pipe connections -->
+                  <rect x="248" y="132" width="14" height="7" rx="2" fill="#1E1E1E" stroke="#2A2A2A"/>
+                  <rect x="248" y="172" width="14" height="7" rx="2" fill="#1E1E1E" stroke="#2A2A2A"/>
+                  <!-- Model plate -->
+                  <rect x="35" y="237" width="84" height="10" rx="2" fill="#111" stroke="#252525"/>
+                  <text x="77" y="244.5" font-family="Consolas,monospace" font-size="6" fill="#444" text-anchor="middle">FCU-B3-22 · 4KW</text>
+                  <!-- Mounting brackets -->
+                  <rect x="30" y="93" width="9" height="18" rx="2" fill="#1A1A1A" stroke="#2A2A2A"/>
+                  <rect x="247" y="93" width="9" height="18" rx="2" fill="#1A1A1A" stroke="#2A2A2A"/>
+                  <!-- Vignette -->
+                  <rect width="296" height="370" fill="url(#v1-vgn)"/>
+                </svg>
+                <div class="cam-tl"></div><div class="cam-tr"></div>
+                <div class="cam-bl"></div><div class="cam-br"></div>
+                <div class="xhair"></div>
+                <div class="vf-hint">Align with fault area</div>
+              </div>
+              <!-- Capture controls -->
+              <div class="cap-bar">
+                <button class="cap-side">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                </button>
+                <div class="cap-main"></div>
+                <button class="cap-side">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </button>
+              </div>
+            </div><!-- /fr1 -->
+
+
+            <!-- ───────────────────
+                 FRAME 2 — ANALYZING
+                 ─────────────────── -->
+            <div class="af f2" id="fr2">
+              <div class="ios-bar">
+                <span class="ios-time">9:41</span>
+                <div class="ios-icons">
+                  <svg width="17" height="12" viewBox="0 0 17 12" fill="white" opacity=".85"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="2" width="3" height="10" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".28"/></svg>
+                  <svg width="15" height="12" viewBox="0 0 15 12" fill="none" stroke="white" stroke-width="1.5" opacity=".85"><path d="M1 9.5c2.5-4 10.5-4 13 0"/><path d="M3.5 11.5c1.5-2.5 6.5-2.5 8 0"/><circle cx="7.5" cy="11.5" r=".8" fill="white" stroke="none"/></svg>
+                  <svg width="25" height="12" viewBox="0 0 25 12" fill="none" opacity=".85"><rect x=".5" y=".5" width="21" height="11" rx="3.5" stroke="white" stroke-opacity=".35"/><rect x="22.5" y="3.5" width="2" height="5" rx="1" fill="white" fill-opacity=".4"/><rect x="1.5" y="1.5" width="17" height="9" rx="2.5" fill="white"/></svg>
+                </div>
+              </div>
+              <!-- Resolve header: spinning starburst replaces avatar during analysis -->
+              <div class="r-hdr">
+                <span class="r-wm">Resolve</span>
+                <div class="r-ava" style="background:transparent;border:none">
+                  <svg class="sbspin" width="32" height="32" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><g transform="translate(24,24)"><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(0)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(22.5)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(45)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(67.5)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(90)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(112.5)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(135)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(157.5)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(180)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(202.5)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(225)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(247.5)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(270)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(292.5)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(315)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(337.5)"/><circle cx="0" cy="0" r="3" fill="#9B5CF6"/></g></svg>
+                </div>
+              </div>
+              <!-- "Analyzing Fault…" — monospace, 28px, per CLAUDE.md §9 -->
+              <div class="an-txt"><div class="an-hl">Analyzing Fault…</div></div>
+              <!-- Image area — fills remaining space -->
+              <div class="aim">
+                <svg viewBox="0 0 296 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;display:block">
+                  <defs>
+                    <radialGradient id="v2-vgn" cx="50%" cy="50%" r="70%"><stop offset="25%" stop-color="transparent"/><stop offset="100%" stop-color="rgba(0,0,0,.75)"/></radialGradient>
+                    <linearGradient id="v2-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#303232"/><stop offset="100%" stop-color="#1E1F1F"/></linearGradient>
+                    <pattern id="v2-fin" x="0" y="0" width="5.5" height="1" patternUnits="userSpaceOnUse"><rect x="0" y="0" width="4" height="1" fill="#2D2D2D"/><rect x="4" y="0" width="1.5" height="1" fill="#111"/></pattern>
+                    <pattern id="v2-foul" x="0" y="0" width="5.5" height="1" patternUnits="userSpaceOnUse"><rect x="0" y="0" width="4" height="1" fill="#2B1E0D"/><rect x="4" y="0" width="1.5" height="1" fill="#0D0900"/></pattern>
+                    <pattern id="v2-msh" x="0" y="0" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#181818"/><rect x="0" y="0" width="5.2" height="5.2" fill="#1D1D1D"/><rect x="5.2" y="0" width="1.8" height="7" fill="#111"/><rect x="0" y="5.2" width="7" height="1.8" fill="#111"/></pattern>
+                    <filter id="v2-glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                    <filter id="v2-blur"><feGaussianBlur stdDeviation="5"/></filter>
+                  </defs>
+                  <rect width="296" height="400" fill="#0C0C0C"/>
+                  <line x1="0" y1="80" x2="296" y2="80" stroke="#161616" stroke-width=".7"/>
+                  <line x1="0" y1="160" x2="296" y2="160" stroke="#161616" stroke-width=".7"/>
+                  <line x1="0" y1="240" x2="296" y2="240" stroke="#161616" stroke-width=".7"/>
+                  <line x1="0" y1="320" x2="296" y2="320" stroke="#161616" stroke-width=".7"/>
+                  <rect x="0" y="340" width="296" height="60" fill="#0A0A0A"/>
+                  <line x1="0" y1="340" x2="296" y2="340" stroke="#1C1C1C"/>
+                  <rect x="252" y="0" width="7" height="341" fill="#181818" stroke="#222" stroke-width=".5"/>
+                  <rect x="263" y="0" width="5" height="341" fill="#161616" stroke="#1E1E1E" stroke-width=".5"/>
+                  <ellipse cx="255" cy="225" rx="13" ry="5" fill="rgba(150,85,18,.65)" filter="url(#v2-blur)"/>
+                  <ellipse cx="267" cy="225" rx="9" ry="4" fill="rgba(130,70,15,.55)" filter="url(#v2-blur)"/>
+                  <rect x="150" y="262" width="85" height="72" rx="4" fill="rgba(18,15,12,.6)" filter="url(#v2-blur)"/>
+                  <rect x="32" y="122" width="224" height="140" rx="8" fill="rgba(0,0,0,.6)" transform="translate(4,7)" filter="url(#v2-blur)"/>
+                  <rect x="30" y="116" width="226" height="138" rx="7" fill="url(#v2-bg)" stroke="#383838"/>
+                  <rect x="30" y="116" width="226" height="30" rx="6" fill="#242424" stroke="#383838" stroke-width=".5"/>
+                  <rect x="35" y="119" width="188" height="23" rx="3" fill="url(#v2-msh)"/>
+                  <rect x="35" y="119" width="188" height="23" rx="3" fill="rgba(38,28,12,.4)"/>
+                  <rect x="228" y="121" width="24" height="19" rx="3" fill="#0D0D0D" stroke="#252525"/>
+                  <text x="240" y="132" font-family="Consolas,monospace" font-size="6" fill="#EF4444" text-anchor="middle">E08</text>
+                  <text x="240" y="138" font-family="Consolas,monospace" font-size="4.5" fill="#444" text-anchor="middle">ERR</text>
+                  <circle cx="47" cy="125" r="5.5" fill="#EF4444" filter="url(#v2-glow)"/>
+                  <circle cx="47" cy="125" r="10" fill="rgba(239,68,68,.15)"/>
+                  <circle cx="60" cy="125" r="4" fill="#1A1A1A" stroke="#2A2A2A"/>
+                  <rect x="33" y="148" width="215" height="48" fill="url(#v2-fin)"/>
+                  <rect x="33" y="196" width="215" height="50" fill="url(#v2-foul)"/>
+                  <ellipse cx="148" cy="213" rx="80" ry="22" fill="rgba(140,80,15,.3)" filter="url(#v2-blur)"/>
+                  <!-- AI scan highlight: dashed box around coil area -->
+                  <rect x="33" y="148" width="215" height="98" rx="3" fill="none" stroke="rgba(155,92,246,.45)" stroke-width="1.5" stroke-dasharray="7 3"/>
+                  <!-- Fouling zone highlight: solid red box -->
+                  <rect x="33" y="196" width="215" height="50" rx="2" fill="rgba(239,68,68,.06)" stroke="rgba(239,68,68,.35)" stroke-width="1"/>
+                  <rect x="30" y="246" width="226" height="8" rx="2" fill="#1C1C1C" stroke="#2A2A2A" stroke-width=".5"/>
+                  <rect x="32" y="256" width="221" height="4" rx="1" fill="#1E1E1E"/>
+                  <rect x="32" y="262" width="221" height="4" rx="1" fill="#1E1E1E"/>
+                  <rect x="32" y="268" width="221" height="4" rx="1" fill="#1E1E1E"/>
+                  <rect x="248" y="152" width="14" height="7" rx="2" fill="#1E1E1E" stroke="#2A2A2A"/>
+                  <rect x="248" y="192" width="14" height="7" rx="2" fill="#1E1E1E" stroke="#2A2A2A"/>
+                  <rect x="35" y="257" width="84" height="10" rx="2" fill="#111" stroke="#252525"/>
+                  <text x="77" y="264.5" font-family="Consolas,monospace" font-size="6" fill="#444" text-anchor="middle">FCU-B3-22 · 4KW</text>
+                  <rect x="30" y="93" width="9" height="18" rx="2" fill="#1A1A1A" stroke="#2A2A2A"/>
+                  <rect x="247" y="93" width="9" height="18" rx="2" fill="#1A1A1A" stroke="#2A2A2A"/>
+                  <rect width="296" height="400" fill="url(#v2-vgn)"/>
+                  <!-- Purple AI overlay tint -->
+                  <rect width="296" height="400" fill="rgba(124,58,237,.04)"/>
+                </svg>
+                <!-- Scan line moving down the image -->
+                <div class="scan-line"></div>
+                <!-- Analysis log — top-left corner of image -->
+                <div class="a-log">
+                  <div class="a-ll done"><span class="lck">✓</span>Analyzing component structure</div>
+                  <div class="a-ll done"><span class="lck">✓</span>Searching equipment manuals</div>
+                  <div class="a-ll done"><span class="lck">✓</span>Reading ESM service history</div>
+                  <div class="a-ll act"><span class="lrng"></span>Querying live BMS data</div>
+                </div>
+                <!-- Spinning starburst — top-right of image -->
+                <div class="a-sb">
+                  <svg class="sbspin" width="24" height="24" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><g transform="translate(24,24)"><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(0)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(22.5)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(45)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(67.5)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(90)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(112.5)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(135)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(157.5)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(180)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(202.5)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(225)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(247.5)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(270)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(292.5)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(315)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(337.5)"/><circle cx="0" cy="0" r="3" fill="#9B5CF6"/></g></svg>
+                </div>
+                <!-- Annotation chips — positioned on frame, slide in from edges per §6.5 -->
+                <div class="ann ann-l ann-d1" style="top:30%"><div class="adot" style="background:#9B5CF6"></div>FCU-B3-22 · Daikin 4kW</div>
+                <div class="ann ann-r ann-d2" style="top:46%"><div class="adot" style="background:#EF4444"></div>Corrosion: Moderate</div>
+                <div class="ann ann-l ann-d3" style="top:60%"><div class="adot" style="background:#F59E0B"></div>Filter: 87% blocked</div>
+                <div class="ann ann-r ann-d4" style="top:74%"><div class="adot" style="background:#22C55E"></div>BMS Δtemp +4.2°C</div>
+              </div>
+            </div><!-- /fr2 -->
+
+
+            <!-- ───────────────────
+                 FRAME 3 — DIAGNOSIS
+                 ─────────────────── -->
+            <div class="af f3" id="fr3">
+              <div class="ios-bar">
+                <span class="ios-time">9:42</span>
+                <div class="ios-icons"><svg width="17" height="12" viewBox="0 0 17 12" fill="white" opacity=".85"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="2" width="3" height="10" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".28"/></svg><svg width="15" height="12" viewBox="0 0 15 12" fill="none" stroke="white" stroke-width="1.5" opacity=".85"><path d="M1 9.5c2.5-4 10.5-4 13 0"/><path d="M3.5 11.5c1.5-2.5 6.5-2.5 8 0"/><circle cx="7.5" cy="11.5" r=".8" fill="white" stroke="none"/></svg><svg width="25" height="12" viewBox="0 0 25 12" fill="none" opacity=".85"><rect x=".5" y=".5" width="21" height="11" rx="3.5" stroke="white" stroke-opacity=".35"/><rect x="22.5" y="3.5" width="2" height="5" rx="1" fill="white" fill-opacity=".4"/><rect x="1.5" y="1.5" width="17" height="9" rx="2.5" fill="white"/></svg></div>
+              </div>
+              <div class="r-hdr">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div class="bk-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></div>
+                  <span class="r-wm" style="font-size:18px">AI Diagnosis</span>
+                </div>
+                <div class="r-ava"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+              </div>
+              <div class="diag-scr">
+                <div class="dlbl">// Asset identified</div>
+                <div class="asset-row">
+                  <div class="asset-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9B5CF6" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div>
+                  <div><div class="asset-nm">FCU-B3-22 · Daikin FXFQ 4kW</div><div class="asset-mt">DWP Manchester · 3F Zone B · Last service 214 days ago</div></div>
+                </div>
+                <div class="dlbl">// Faults detected</div>
+                <div class="fc hi">
+                  <div class="fc-sev hi">● High priority</div>
+                  <div class="fc-nm">Heat Exchanger Fouling — Filter 87% Blocked</div>
+                  <div class="fc-dt">Severe dust and particulate build-up on filter and coil fins. Supply air temp 4.2°C above setpoint per live BMS. Continued operation risks compressor strain and SLA breach on cooling SLA.</div>
+                  <div class="fc-tags"><span class="fc-tag"><span class="fc-dot"></span>ESM history</span><span class="fc-tag"><span class="fc-dot" style="background:#22C55E"></span>BMS: +4.2°C</span><span class="fc-tag"><span class="fc-dot" style="background:#F59E0B"></span>O&amp;M manual</span></div>
+                </div>
+                <div class="fc md">
+                  <div class="fc-sev md">● Moderate priority</div>
+                  <div class="fc-nm">Corrosion at Return Pipe Joint</div>
+                  <div class="fc-dt">Visible oxidation at flow/return connection. Cross-referenced with O&amp;M schematic — pipe elbow is original (2017). No active leak confirmed but inspection recommended during filter replacement visit.</div>
+                  <div class="fc-tags"><span class="fc-tag"><span class="fc-dot" style="background:#F59E0B"></span>P&amp;ID schematics</span><span class="fc-tag"><span class="fc-dot"></span>Install records</span><span class="fc-tag"><span class="fc-dot"></span>SOP: HVAC-07</span></div>
+                </div>
+                <button class="cta-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="5" rx="1"/><path d="M5 3H3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2"/></svg>Create Work Order</button>
+              </div>
+              <div class="ph-nav">
+                <div class="pni on"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg><span>Faults</span></div>
+                <div class="pni"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>Reports</span></div>
+                <div class="pni"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93A10 10 0 1 1 4.93 19.07"/></svg><span>Fleet</span></div>
+                <div class="pni"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span></div>
+              </div>
+            </div><!-- /fr3 -->
+
+
+            <!-- ───────────────────
+                 FRAME 4 — ASSIGN
+                 ─────────────────── -->
+            <div class="af f4" id="fr4">
+              <div class="ios-bar">
+                <span class="ios-time">9:42</span>
+                <div class="ios-icons"><svg width="17" height="12" viewBox="0 0 17 12" fill="white" opacity=".85"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="2" width="3" height="10" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".28"/></svg><svg width="15" height="12" viewBox="0 0 15 12" fill="none" stroke="white" stroke-width="1.5" opacity=".85"><path d="M1 9.5c2.5-4 10.5-4 13 0"/><path d="M3.5 11.5c1.5-2.5 6.5-2.5 8 0"/><circle cx="7.5" cy="11.5" r=".8" fill="white" stroke="none"/></svg><svg width="25" height="12" viewBox="0 0 25 12" fill="none" opacity=".85"><rect x=".5" y=".5" width="21" height="11" rx="3.5" stroke="white" stroke-opacity=".35"/><rect x="22.5" y="3.5" width="2" height="5" rx="1" fill="white" fill-opacity=".4"/><rect x="1.5" y="1.5" width="17" height="9" rx="2.5" fill="white"/></svg></div>
+              </div>
+              <div class="asgn-hdr">
+                <div class="bk-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></div>
+                <span class="asgn-ttl">New Work Order</span>
+              </div>
+              <div class="asgn-body">
+                <div class="wo-card">
+                  <div class="wo-r"><span class="wo-l">Asset</span><span class="wo-v">FCU-B3-22</span></div>
+                  <div class="wo-r"><span class="wo-l">Site</span><span class="wo-v">DWP Manchester · 3F Zone B</span></div>
+                  <div class="wo-r"><span class="wo-l">Fault</span><span class="wo-v">HVAC — Filter &amp; Coil</span></div>
+                  <div class="wo-r"><span class="wo-l">Priority</span><span class="hi-badge"><svg width="7" height="7" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3" fill="#F59E0B"/></svg>High</span></div>
+                </div>
+                <div>
+                  <div class="asec">// Select engineer</div>
+                  <div class="eng-c sel">
+                    <div class="eng-av ea1">JW</div>
+                    <div><div class="eng-nm">Jamie Walsh</div><div class="eng-mt">M&amp;E Technician · 2.3 km away</div></div>
+                    <div class="eng-tag on">● On shift</div>
+                    <div class="sel-ring"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>
+                  </div>
+                  <div class="eng-c">
+                    <div class="eng-av ea2">SO</div>
+                    <div><div class="eng-nm">Sarah Osei</div><div class="eng-mt">Sr. HVAC Engineer · 4.1 km away</div></div>
+                    <div class="eng-tag off">Available</div>
+                  </div>
+                </div>
+                <div>
+                  <div class="asec">// Schedule</div>
+                  <div class="sch-row"><div><div class="sch-l">Attendance window</div><div class="sch-v">Today · 14:00 – 16:00</div></div><span style="color:var(--txt3)">›</span></div>
+                </div>
+              </div>
+              <div class="asgn-cta">
+                <button class="asgn-cta-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Assign &amp; Notify Jamie</button>
+              </div>
+            </div><!-- /fr4 -->
+
+
+            <!-- ───────────────────
+                 FRAME 5 — CONFIRMED
+                 ─────────────────── -->
+            <div class="af f5" id="fr5">
+              <div class="ios-bar">
+                <span class="ios-time">9:43</span>
+                <div class="ios-icons"><svg width="17" height="12" viewBox="0 0 17 12" fill="white" opacity=".85"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="2" width="3" height="10" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".28"/></svg><svg width="15" height="12" viewBox="0 0 15 12" fill="none" stroke="white" stroke-width="1.5" opacity=".85"><path d="M1 9.5c2.5-4 10.5-4 13 0"/><path d="M3.5 11.5c1.5-2.5 6.5-2.5 8 0"/><circle cx="7.5" cy="11.5" r=".8" fill="white" stroke="none"/></svg><svg width="25" height="12" viewBox="0 0 25 12" fill="none" opacity=".85"><rect x=".5" y=".5" width="21" height="11" rx="3.5" stroke="white" stroke-opacity=".35"/><rect x="22.5" y="3.5" width="2" height="5" rx="1" fill="white" fill-opacity=".4"/><rect x="1.5" y="1.5" width="17" height="9" rx="2.5" fill="white"/></svg></div>
+              </div>
+              <div class="conf-hero">
+                <div class="chk-ring" id="chkRing">
+                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 16 13 23 26 9"/></svg>
+                </div>
+                <div class="conf-title">Work Order Created</div>
+                <div class="conf-wo">WO-2847</div>
+                <div class="conf-sub">FCU-B3-22 · DWP Manchester<br>Jamie Walsh assigned &amp; notified</div>
+              </div>
+              <div class="conf-rows">
+                <div class="cr"><div class="cr-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="cr-tx">Assigned to</div><div class="cr-vl ok">Jamie Walsh ✓</div></div>
+                <div class="cr"><div class="cr-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.61 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.52 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="cr-tx">Push notification</div><div class="cr-vl ok">Sent ✓</div></div>
+                <div class="cr"><div class="cr-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div class="cr-tx">Attendance</div><div class="cr-vl">Today 14:00 – 16:00</div></div>
+                <div class="cr"><div class="cr-ic"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="cr-tx">Compliance record</div><div class="cr-vl ok">Auto-generated ✓</div></div>
+              </div>
+              <div class="conf-btns">
+                <button class="cb-out">View WO</button>
+                <button class="cb-sol">Done</button>
+              </div>
+            </div><!-- /fr5 -->
+
+          </div><!-- /af-wrap -->
+        </div><!-- /ph-scr -->
+        <div class="home-ind"></div>
+      </div><!-- /ph-out -->
+    </div><!-- /ph-col -->
+
+
+    <!-- ══════════════════════════════
+         STEP TRACKER
+         ══════════════════════════════ -->
+    <div class="info-col">
+      <div class="step-track" id="stepTrack">
+
+        <div class="si cur" data-fi="0">
+          <div class="si-dot">1</div>
+          <div class="si-body">
+            <div class="si-nm">Capture fault image</div>
+            <div class="si-dc">Engineer opens Resolve on-site, selects Video &amp; Image mode, and photographs the fan coil unit. No typing needed — the camera is the primary input.
+              <div class="si-tags"><span class="si-tag">Video &amp; Image</span><span class="si-tag">On-device</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="si" data-fi="1">
+          <div class="si-dot">2</div>
+          <div class="si-body">
+            <div class="si-nm">AI analyzes the fault</div>
+            <div class="si-dc">Resolve cross-references the image against ESM service history, equipment manuals, O&amp;M documentation, and live BMS sensor data to identify root causes.
+              <div class="si-tags"><span class="si-tag">ESM history</span><span class="si-tag">BMS live data</span><span class="si-tag">O&amp;M manuals</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="si" data-fi="2">
+          <div class="si-dot">3</div>
+          <div class="si-body">
+            <div class="si-nm">Diagnosis delivered</div>
+            <div class="si-dc">Two faults surfaced: heat exchanger fouling at high priority (filter 87% blocked, supply temp +4.2°C above setpoint) and moderate corrosion at the return pipe joint.
+              <div class="si-tags"><span class="si-tag">Severity ranking</span><span class="si-tag">Evidence-backed</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="si" data-fi="3">
+          <div class="si-dot">4</div>
+          <div class="si-body">
+            <div class="si-nm">Assign to engineer</div>
+            <div class="si-dc">Resolve surfaces engineers ranked by proximity and skill. Jamie Walsh (M&amp;E, 2.3 km, on shift) is selected and a work order raised directly in the platform.
+              <div class="si-tags"><span class="si-tag">Smart dispatch</span><span class="si-tag">Skill match</span><span class="si-tag">SLA-aware</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="si" data-fi="4">
+          <div class="si-dot" style="font-size:15px">✓</div>
+          <div class="si-body">
+            <div class="si-nm">Work order confirmed</div>
+            <div class="si-dc">WO-2847 created. Jamie notified by push. Compliance record auto-generated for the DWP estate audit trail. Engineer arrives with diagnosis, evidence, and SOP pre-loaded.
+              <div class="si-tags"><span class="si-tag">Compliance auto-log</span><span class="si-tag">Push notification</span><span class="si-tag">Zero admin</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /info-col -->
+
+  </div><!-- /rdw-layout -->
+
+  <!-- Progress dots -->
+  <div class="prog-area">
+    <div class="prog-dots" id="progDots">
+      <div class="pd on"></div><div class="pd"></div><div class="pd"></div><div class="pd"></div><div class="pd"></div>
+    </div>
+    <div class="prog-lbl" id="progLbl">Step 1 of 5 — Capture fault image</div>
+  </div>
+
+</div><!-- /rdw -->
+</div><!-- /pane-resolve -->
+
+
+<script>
+/* ============================================================
+   TAB SWITCHING
+   ============================================================ */
+function setTab(name, btn) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.pg-tab').forEach(t => t.classList.remove('on'));
+  document.getElementById('pane-' + name).classList.add('on');
+  btn.classList.add('on');
+  if (name === 'resolve') startLoop(); else stopLoop();
+}
+
+/* ============================================================
+   FRAME LOOP
+   ============================================================ */
+const TOTAL   = 5;
+const DURS    = [3800, 5200, 5000, 4500, 4200]; // ms each frame
+const LABELS  = [
+  'Capture fault image',
+  'AI analyzes the fault',
+  'Diagnosis delivered',
+  'Assign to engineer',
+  'Work order confirmed'
+];
+
+let cur = 0, timer = null, running = false;
+
+function goto(n) {
+  const frames = document.querySelectorAll('.af');
+  const dots   = document.querySelectorAll('.pd');
+  const steps  = document.querySelectorAll('.si');
+  const lbl    = document.getElementById('progLbl');
+
+  // Exit current
+  frames[cur].classList.remove('on');
+  const prev = cur;
+  (function(p){ setTimeout(()=>{ frames[p].classList.remove('out'); }, 700); })(prev);
+  frames[prev].classList.add('out');
+
+  cur = n;
+  frames[cur].classList.add('on');
+
+  // Restart check-pop animation on frame 5
+  if (cur === 4) {
+    const ring = document.getElementById('chkRing');
+    if (ring) {
+      ring.classList.remove('animate');
+      void ring.offsetWidth; // reflow
+      ring.classList.add('animate');
+    }
+  }
+
+  // Progress dots
+  dots.forEach((d, i) => d.classList.toggle('on', i === cur));
+
+  // Step tracker
+  steps.forEach((s, i) => {
+    s.classList.remove('cur', 'dn');
+    if (i < cur)  s.classList.add('dn');
+    if (i === cur) s.classList.add('cur');
+  });
+
+  if (lbl) lbl.textContent = `Step ${cur + 1} of ${TOTAL} — ${LABELS[cur]}`;
+}
+
+function advance() {
+  goto((cur + 1) % TOTAL);
+  timer = setTimeout(advance, DURS[cur]);
+}
+
+function startLoop() {
+  if (running) return;
+  running = true;
+  timer = setTimeout(advance, DURS[cur]);
+}
+
+function stopLoop() {
+  running = false;
+  if (timer) { clearTimeout(timer); timer = null; }
+}
+
+// Step items are clickable to jump
+document.querySelectorAll('.si').forEach((s, i) => {
+  s.addEventListener('click', () => {
+    if (timer) { clearTimeout(timer); timer = null; }
+    goto(i);
+    if (running) timer = setTimeout(advance, DURS[i]);
+  });
+});
+
+// Start immediately if resolve tab is active on load
+if (document.getElementById('pane-resolve').classList.contains('on')) startLoop();
+</script>
+
+</body>
+</html>
