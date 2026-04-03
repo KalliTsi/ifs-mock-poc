@@ -313,6 +313,99 @@ hr.div{border:none;border-top:1px solid var(--border);margin:20px 0}
   .info-col{width:100%;max-width:320px;padding-top:0}
   .rdw{padding:28px 14px 48px}
 }
+
+/* ============================================================
+   WORKSHOP STYLES
+   ============================================================ */
+.ws-wrap{background:#070709;min-height:calc(100vh - 52px);padding:44px 28px 80px;max-width:1200px;margin:0 auto}
+.ws-hdr{margin-bottom:52px}
+.ws-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--acc-br);margin-bottom:10px}
+.ws-title{font-size:28px;font-weight:700;color:var(--txt);letter-spacing:-.6px;margin-bottom:10px}
+.ws-sub{font-size:14px;color:var(--txt2);line-height:1.7;max-width:740px;margin-bottom:24px}
+.ws-legend{display:flex;flex-wrap:wrap;gap:20px}
+.ws-leg{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--txt2)}
+.ws-ldot{width:10px;height:10px;border-radius:50%}
+.ldot-eam{background:#22C55E}.ldot-fsm{background:#9B5CF6}.ldot-esm{background:#F59E0B}
+
+.ws-sec{margin-bottom:60px}
+.ws-sec-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc-br);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.ws-sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* Journey flow */
+.journey-scroll{overflow-x:auto;padding-bottom:12px}
+.journey-flow{display:flex;gap:0;min-width:max-content;align-items:stretch}
+.jstage{position:relative;width:128px;flex-shrink:0}
+.jstage:last-child .jarrow{display:none}
+.jarrow{position:absolute;right:-14px;top:50%;transform:translateY(-50%);z-index:2;color:var(--txt3);font-size:18px;line-height:1}
+.jcard{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 12px;height:100%;display:flex;flex-direction:column;gap:8px;margin-right:28px;transition:border-color 200ms}
+.jcard:hover{border-color:var(--border-sub)}
+.jstage-num{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--txt3)}
+.jstage-name{font-size:12px;font-weight:700;color:var(--txt);letter-spacing:-.2px;line-height:1.3}
+.jstage-desc{font-size:11px;color:var(--txt2);line-height:1.5;flex:1}
+.jstage-tags{display:flex;flex-wrap:wrap;gap:3px;margin-top:auto}
+.jtag{display:inline-flex;align-items:center;gap:3px;border-radius:20px;padding:2px 7px;font-size:9.5px;font-weight:600;font-family:var(--mono)}
+.jtag.eam{background:rgba(34,197,94,.1);color:#4ade80}.jtag.fsm{background:rgba(155,92,246,.12);color:#c084fc}.jtag.esm{background:rgba(245,158,11,.1);color:#fbbf24}
+.jstage-pain{margin-top:6px;display:flex;align-items:flex-start;gap:4px;font-size:10px;color:#f87171;line-height:1.4;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.18);border-radius:6px;padding:5px 7px}
+.pain-flag{color:#EF4444;flex-shrink:0;font-size:11px}
+
+/* Coverage map */
+.coverage-wrap{overflow-x:auto}
+.coverage-grid{display:grid;grid-template-columns:140px repeat(9,1fr);min-width:900px;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.cg-cell{padding:11px 10px;font-size:11px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.cg-cell:last-child{border-right:none}
+.cg-row-last .cg-cell{border-bottom:none}
+/* Header row */
+.cg-hdr-label{background:#0F0F12;font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3);display:flex;align-items:center}
+.cg-hdr-stage{background:#0F0F12;display:flex;flex-direction:column;gap:2px}
+.cg-stage-num{font-family:var(--mono);font-size:8.5px;color:var(--txt3)}
+.cg-stage-nm{font-size:10.5px;font-weight:600;color:var(--txt2);line-height:1.3}
+/* System rows */
+.cg-sys-label{background:#0D0D10;display:flex;flex-direction:column;justify-content:center;gap:3px}
+.cg-sys-name{font-size:11px;font-weight:700;color:var(--txt)}
+.cg-sys-desc{font-size:10px;color:var(--txt3)}
+.cg-sys-pill{display:inline-block;padding:1px 7px;border-radius:20px;font-size:9px;font-weight:700;font-family:var(--mono);margin-top:2px}
+.cg-sys-pill.eam{background:rgba(34,197,94,.12);color:#4ade80}
+.cg-sys-pill.fsm{background:rgba(155,92,246,.12);color:#c084fc}
+.cg-sys-pill.esm{background:rgba(245,158,11,.1);color:#fbbf24}
+.cg-active{display:flex;align-items:center;justify-content:center;background:transparent}
+.cg-active.eam{background:rgba(34,197,94,.08)}
+.cg-active.fsm{background:rgba(155,92,246,.08)}
+.cg-active.esm{background:rgba(245,158,11,.07)}
+.cg-dot{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px}
+.cg-dot.eam{background:rgba(34,197,94,.2);color:#22C55E}
+.cg-dot.fsm{background:rgba(155,92,246,.2);color:#9B5CF6}
+.cg-dot.esm{background:rgba(245,158,11,.18);color:#F59E0B}
+.cg-inactive{background:#090909}
+
+/* Pain points grid */
+.pain-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.pain-card{background:var(--surface);border:1px solid rgba(239,68,68,.2);border-left:3px solid #EF4444;border-radius:10px;padding:14px 16px}
+.pain-stage{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--txt3);margin-bottom:5px}
+.pain-title{font-size:13px;font-weight:600;color:var(--txt);letter-spacing:-.2px;margin-bottom:6px}
+.pain-body{font-size:12px;color:var(--txt2);line-height:1.55}
+
+/* HMW grid */
+.hmw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.hmw-card{background:var(--surface);border:1px solid var(--acc-m);border-left:3px solid var(--acc-br);border-radius:10px;padding:14px 16px}
+.hmw-tag{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--acc-br);margin-bottom:6px}
+.hmw-q{font-size:13px;color:var(--txt);line-height:1.55;font-style:italic}
+.hmw-q strong{font-style:normal;color:var(--acc-br)}
+
+/* Resolve opportunity */
+.opp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:16px}
+.opp-card{background:rgba(124,58,237,.07);border:1px solid var(--acc-m);border-radius:10px;padding:16px}
+.opp-stage-range{font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--acc-br);margin-bottom:6px}
+.opp-title{font-size:13px;font-weight:600;color:var(--txt);margin-bottom:6px;letter-spacing:-.2px}
+.opp-body{font-size:12px;color:var(--txt2);line-height:1.55}
+.opp-bar{background:rgba(155,92,246,.12);border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:flex-start;gap:16px}
+.opp-bar-icon{flex-shrink:0;margin-top:2px}
+.opp-bar-text{font-size:13px;color:var(--txt2);line-height:1.6}
+.opp-bar-text strong{color:var(--txt);font-weight:600}
+
+/* Assumptions */
+.assume-list{display:flex;flex-direction:column;gap:8px}
+.assume-item{display:flex;align-items:baseline;gap:12px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:12.5px;color:var(--txt2);line-height:1.5}
+.assume-n{font-family:var(--mono);font-size:9px;color:var(--txt3);flex-shrink:0;letter-spacing:.06em}
 </style>
 </head>
 <body>
@@ -323,6 +416,7 @@ hr.div{border:none;border-top:1px solid var(--border);margin:20px 0}
 <div class="pg-tabs">
   <button class="pg-tab on"  onclick="setTab('analysis',this)">ISS Analysis</button>
   <button class="pg-tab"     onclick="setTab('resolve',this)">Resolve — Live Demo</button>
+  <button class="pg-tab"     onclick="setTab('workshop',this)">Design Thinking Workshop</button>
 </div>
 
 
@@ -801,6 +895,432 @@ hr.div{border:none;border-top:1px solid var(--border);margin:20px 0}
 
 </div><!-- /rdw -->
 </div><!-- /pane-resolve -->
+
+
+<!-- ============================================================
+     TAB 3: DESIGN THINKING WORKSHOP
+     ============================================================ -->
+<div id="pane-workshop" class="tab-pane">
+<div class="ws-wrap">
+
+  <!-- Header -->
+  <div class="ws-hdr">
+    <div class="ws-eyebrow">// Design Thinking Workshop</div>
+    <div class="ws-title">Facilities Maintenance — Journey &amp; System Landscape</div>
+    <div class="ws-sub">A hypothesis map of how EAM, FSM, and ESM activate across the end-to-end FM journey. Use as a starting point for discovery conversations — to identify friction, surface assumptions, and position where AI-assisted field intelligence adds value.</div>
+    <div class="ws-legend">
+      <span class="ws-leg"><span class="ws-ldot ldot-eam"></span><strong style="color:var(--txt)">EAM</strong> — Keeping machines running</span>
+      <span class="ws-leg"><span class="ws-ldot ldot-fsm"></span><strong style="color:var(--txt)">FSM</strong> — Sending technicians to fix things on-site</span>
+      <span class="ws-leg"><span class="ws-ldot ldot-esm"></span><strong style="color:var(--txt)">ESM</strong> — Handling internal service requests</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       SECTION 1: JOURNEY STAGES
+       ══════════════════════════════ -->
+  <div class="ws-sec">
+    <div class="ws-sec-lbl">// 01 — As-Is Journey Map · 9 Stages</div>
+    <div class="journey-scroll">
+      <div class="journey-flow">
+
+        <!-- Stage 1 -->
+        <div class="jstage">
+          <div class="jcard">
+            <div class="jstage-num">01 / 09</div>
+            <div class="jstage-name">Detect</div>
+            <div class="jstage-desc">Asset fails, BMS triggers alert, PPM becomes due, or an occupant notices a problem.</div>
+            <div class="jstage-tags">
+              <span class="jtag eam">EAM</span>
+              <span class="jtag esm">ESM</span>
+            </div>
+            <div class="jstage-pain"><span class="pain-flag">!</span>Mostly reactive — faults found by users, not sensors. BMS data exists but rarely triggers work orders automatically.</div>
+          </div>
+          <div class="jarrow">›</div>
+        </div>
+
+        <!-- Stage 2 -->
+        <div class="jstage">
+          <div class="jcard">
+            <div class="jstage-num">02 / 09</div>
+            <div class="jstage-name">Log &amp; Triage</div>
+            <div class="jstage-desc">Fault or request recorded, SLA category assigned, asset linked to ticket or work order.</div>
+            <div class="jstage-tags">
+              <span class="jtag eam">EAM</span>
+              <span class="jtag fsm">FSM</span>
+              <span class="jtag esm">ESM</span>
+            </div>
+            <div class="jstage-pain"><span class="pain-flag">!</span>Multiple intake channels. No single source of truth. Asset service history not surfaced at intake.</div>
+          </div>
+          <div class="jarrow">›</div>
+        </div>
+
+        <!-- Stage 3 -->
+        <div class="jstage">
+          <div class="jcard">
+            <div class="jstage-num">03 / 09</div>
+            <div class="jstage-name">Plan &amp; Resource</div>
+            <div class="jstage-desc">Right-skilled engineer identified. Parts and materials availability checked against job requirements.</div>
+            <div class="jstage-tags">
+              <span class="jtag eam">EAM</span>
+              <span class="jtag fsm">FSM</span>
+            </div>
+            <div class="jstage-pain"><span class="pain-flag">!</span>Parts availability unknown at planning. Skills mismatch sends wrong grade, requiring a second visit.</div>
+          </div>
+          <div class="jarrow">›</div>
+        </div>
+
+        <!-- Stage 4 -->
+        <div class="jstage">
+          <div class="jcard">
+            <div class="jstage-num">04 / 09</div>
+            <div class="jstage-name">Dispatch</div>
+            <div class="jstage-desc">Engineer assigned, route optimised, job pack issued. Subcontractors or direct workforce notified.</div>
+            <div class="jstage-tags">
+              <span class="jtag fsm">FSM</span>
+            </div>
+            <div class="jstage-pain"><span class="pain-flag">!</span>Subcontractor visibility is limited. Briefing is ad hoc — no pre-diagnosis information passed to engineer.</div>
+          </div>
+          <div class="jarrow">›</div>
+        </div>
+
+        <!-- Stage 5 -->
+        <div class="jstage">
+          <div class="jcard">
+            <div class="jstage-num">05 / 09</div>
+            <div class="jstage-name">On-Site Arrival</div>
+            <div class="jstage-desc">Engineer arrives, accesses job reference, reviews instructions and asset information on mobile device.</div>
+            <div class="jstage-tags">
+              <span class="jtag eam">EAM</span>
+              <span class="jtag fsm">FSM</span>
+            </div>
+            <div class="jstage-pain"><span class="pain-flag">!</span>Job pack is thin. Schematics, manuals, and service history not accessible in the field. Engineer works from memory.</div>
+          </div>
+          <div class="jarrow">›</div>
+        </div>
+
+        <!-- Stage 6 -->
+        <div class="jstage">
+          <div class="jcard">
+            <div class="jstage-num">06 / 09</div>
+            <div class="jstage-name">Diagnose</div>
+            <div class="jstage-desc">Engineer assesses the fault visually and technically. Root cause identified before work begins.</div>
+            <div class="jstage-tags">
+              <span class="jtag eam">EAM</span>
+              <span class="jtag fsm">FSM</span>
+            </div>
+            <div class="jstage-pain"><span class="pain-flag">!</span>Diagnosis depends entirely on individual expertise. No standardised process. First-time fix rate is highly variable by engineer.</div>
+          </div>
+          <div class="jarrow">›</div>
+        </div>
+
+        <!-- Stage 7 -->
+        <div class="jstage">
+          <div class="jcard">
+            <div class="jstage-num">07 / 09</div>
+            <div class="jstage-name">Repair &amp; Maintain</div>
+            <div class="jstage-desc">Work performed. Parts fitted. Compliance and safety procedures followed. Time on-site recorded.</div>
+            <div class="jstage-tags">
+              <span class="jtag eam">EAM</span>
+              <span class="jtag fsm">FSM</span>
+            </div>
+            <div class="jstage-pain"><span class="pain-flag">!</span>Missing parts cause aborted visits. No standardised repair steps. Safety procedure adherence is inconsistent.</div>
+          </div>
+          <div class="jarrow">›</div>
+        </div>
+
+        <!-- Stage 8 -->
+        <div class="jstage">
+          <div class="jcard">
+            <div class="jstage-num">08 / 09</div>
+            <div class="jstage-name">Document &amp; Sign-off</div>
+            <div class="jstage-desc">Job completion recorded. Evidence captured. Client or site manager signs off. Compliance record generated.</div>
+            <div class="jstage-tags">
+              <span class="jtag eam">EAM</span>
+              <span class="jtag fsm">FSM</span>
+              <span class="jtag esm">ESM</span>
+            </div>
+            <div class="jstage-pain"><span class="pain-flag">!</span>Compliance evidence captured manually — inconsistent format, high audit prep overhead on regulated estates.</div>
+          </div>
+          <div class="jarrow">›</div>
+        </div>
+
+        <!-- Stage 9 -->
+        <div class="jstage">
+          <div class="jcard">
+            <div class="jstage-num">09 / 09</div>
+            <div class="jstage-name">Close &amp; Learn</div>
+            <div class="jstage-desc">Asset record updated. SLA performance captured. Trend analysis feeds future maintenance schedules.</div>
+            <div class="jstage-tags">
+              <span class="jtag eam">EAM</span>
+              <span class="jtag fsm">FSM</span>
+              <span class="jtag esm">ESM</span>
+            </div>
+            <div class="jstage-pain"><span class="pain-flag">!</span>SLA breaches discovered retrospectively. Failure patterns don't feed back into asset maintenance planning.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════
+       SECTION 2: SYSTEM COVERAGE MAP
+       ══════════════════════════════ -->
+  <div class="ws-sec">
+    <div class="ws-sec-lbl">// 02 — System Activation Across Journey</div>
+    <div class="coverage-wrap">
+      <div class="coverage-grid">
+
+        <!-- Header row -->
+        <div class="cg-cell cg-hdr-label">Stage</div>
+        <div class="cg-cell cg-hdr-stage"><div class="cg-stage-num">01</div><div class="cg-stage-nm">Detect</div></div>
+        <div class="cg-cell cg-hdr-stage"><div class="cg-stage-num">02</div><div class="cg-stage-nm">Log &amp; Triage</div></div>
+        <div class="cg-cell cg-hdr-stage"><div class="cg-stage-num">03</div><div class="cg-stage-nm">Plan &amp; Resource</div></div>
+        <div class="cg-cell cg-hdr-stage"><div class="cg-stage-num">04</div><div class="cg-stage-nm">Dispatch</div></div>
+        <div class="cg-cell cg-hdr-stage"><div class="cg-stage-num">05</div><div class="cg-stage-nm">On-Site Arrival</div></div>
+        <div class="cg-cell cg-hdr-stage"><div class="cg-stage-num">06</div><div class="cg-stage-nm">Diagnose</div></div>
+        <div class="cg-cell cg-hdr-stage"><div class="cg-stage-num">07</div><div class="cg-stage-nm">Repair</div></div>
+        <div class="cg-cell cg-hdr-stage"><div class="cg-stage-num">08</div><div class="cg-stage-nm">Document</div></div>
+        <div class="cg-cell cg-hdr-stage"><div class="cg-stage-num">09</div><div class="cg-stage-nm">Close &amp; Learn</div></div>
+
+        <!-- EAM row -->
+        <div class="cg-cell cg-sys-label">
+          <div class="cg-sys-name">EAM</div>
+          <div class="cg-sys-desc">Keeping machines running</div>
+          <span class="cg-sys-pill eam">Asset &amp; Maintenance</span>
+        </div>
+        <!-- 01 Detect -->
+        <div class="cg-cell cg-active eam"><div class="cg-dot eam" title="PPM schedule & sensor alerts">✓</div></div>
+        <!-- 02 Log -->
+        <div class="cg-cell cg-active eam"><div class="cg-dot eam" title="Asset history & record">✓</div></div>
+        <!-- 03 Plan -->
+        <div class="cg-cell cg-active eam"><div class="cg-dot eam" title="Parts BOM & inventory">✓</div></div>
+        <!-- 04 Dispatch -->
+        <div class="cg-cell cg-inactive"></div>
+        <!-- 05 Arrive -->
+        <div class="cg-cell cg-active eam"><div class="cg-dot eam" title="Schematics & asset data">✓</div></div>
+        <!-- 06 Diagnose -->
+        <div class="cg-cell cg-active eam"><div class="cg-dot eam" title="Service history, manuals, BMS data">✓</div></div>
+        <!-- 07 Repair -->
+        <div class="cg-cell cg-active eam"><div class="cg-dot eam" title="Parts procedures & compliance guides">✓</div></div>
+        <!-- 08 Document -->
+        <div class="cg-cell cg-active eam"><div class="cg-dot eam" title="Asset maintenance record">✓</div></div>
+        <!-- 09 Close -->
+        <div class="cg-cell cg-active eam"><div class="cg-dot eam" title="Next PPM scheduled, trend analysis">✓</div></div>
+
+        <!-- FSM row -->
+        <div class="cg-cell cg-sys-label">
+          <div class="cg-sys-name">FSM</div>
+          <div class="cg-sys-desc">Sending technicians on-site</div>
+          <span class="cg-sys-pill fsm">Field &amp; Workforce</span>
+        </div>
+        <!-- 01 Detect -->
+        <div class="cg-cell cg-inactive"></div>
+        <!-- 02 Log -->
+        <div class="cg-cell cg-active fsm"><div class="cg-dot fsm" title="Work order creation">✓</div></div>
+        <!-- 03 Plan -->
+        <div class="cg-cell cg-active fsm"><div class="cg-dot fsm" title="Skills matching & availability">✓</div></div>
+        <!-- 04 Dispatch -->
+        <div class="cg-cell cg-active fsm"><div class="cg-dot fsm" title="Scheduling, routing, assignment">✓</div></div>
+        <!-- 05 Arrive -->
+        <div class="cg-cell cg-active fsm"><div class="cg-dot fsm" title="Mobile job access">✓</div></div>
+        <!-- 06 Diagnose -->
+        <div class="cg-cell cg-active fsm"><div class="cg-dot fsm" title="Guided workflow (if available)">✓</div></div>
+        <!-- 07 Repair -->
+        <div class="cg-cell cg-active fsm"><div class="cg-dot fsm" title="Job management, time & materials">✓</div></div>
+        <!-- 08 Document -->
+        <div class="cg-cell cg-active fsm"><div class="cg-dot fsm" title="Job completion & compliance proof">✓</div></div>
+        <!-- 09 Close -->
+        <div class="cg-cell cg-active fsm cg-row-last"><div class="cg-dot fsm" title="SLA reporting, billing">✓</div></div>
+
+        <!-- ESM row -->
+        <div class="cg-cell cg-sys-label cg-row-last">
+          <div class="cg-sys-name">ESM</div>
+          <div class="cg-sys-desc">Handling service requests</div>
+          <span class="cg-sys-pill esm">Service Desk</span>
+        </div>
+        <!-- 01 Detect -->
+        <div class="cg-cell cg-active esm cg-row-last"><div class="cg-dot esm" title="User-reported request">✓</div></div>
+        <!-- 02 Log -->
+        <div class="cg-cell cg-active esm cg-row-last"><div class="cg-dot esm" title="Service ticket & SLA category">✓</div></div>
+        <!-- 03 Plan -->
+        <div class="cg-cell cg-inactive cg-row-last"></div>
+        <!-- 04 Dispatch -->
+        <div class="cg-cell cg-inactive cg-row-last"></div>
+        <!-- 05 Arrive -->
+        <div class="cg-cell cg-inactive cg-row-last"></div>
+        <!-- 06 Diagnose -->
+        <div class="cg-cell cg-inactive cg-row-last"></div>
+        <!-- 07 Repair -->
+        <div class="cg-cell cg-inactive cg-row-last"></div>
+        <!-- 08 Document -->
+        <div class="cg-cell cg-active esm cg-row-last"><div class="cg-dot esm" title="Ticket resolution, requester notified">✓</div></div>
+        <!-- 09 Close -->
+        <div class="cg-cell cg-active esm cg-row-last"><div class="cg-dot esm" title="SLA dashboard, requestor feedback">✓</div></div>
+
+      </div>
+    </div>
+    <div style="margin-top:10px;font-size:11px;color:var(--txt3);font-family:var(--mono)">// Hypothesis only — activation varies by organisation and system configuration. Use to frame discovery questions.</div>
+  </div>
+
+
+  <!-- ══════════════════════════════
+       SECTION 3: PAIN POINTS
+       ══════════════════════════════ -->
+  <div class="ws-sec">
+    <div class="ws-sec-lbl">// 03 — Identified Pain Points</div>
+    <div class="pain-grid">
+
+      <div class="pain-card">
+        <div class="pain-stage">Stage 01 · Detect</div>
+        <div class="pain-title">Reactive, not predictive</div>
+        <div class="pain-body">Faults are discovered by occupants or on scheduled visits, not by sensors. BMS data exists but isn't wired to work order triggers — the asset is already failing before anyone knows.</div>
+      </div>
+
+      <div class="pain-card">
+        <div class="pain-stage">Stage 02 · Log &amp; Triage</div>
+        <div class="pain-title">No single source of truth</div>
+        <div class="pain-body">Multiple intake channels (phone, email, portal, direct to engineer) create duplicates and inconsistent records. Asset service history is not automatically surfaced at intake, so priority is set blind.</div>
+      </div>
+
+      <div class="pain-card">
+        <div class="pain-stage">Stage 03 · Plan &amp; Resource</div>
+        <div class="pain-title">Parts and skills mismatch</div>
+        <div class="pain-body">Parts availability is unknown at planning time. The wrong grade of engineer is often dispatched — a costly mistake that requires a second visit and burns SLA time before work even begins.</div>
+      </div>
+
+      <div class="pain-card">
+        <div class="pain-stage">Stage 04 · Dispatch</div>
+        <div class="pain-title">Subcontractor visibility gap</div>
+        <div class="pain-body">When subcontractors are used, real-time location, availability, and skills data is missing from the planner view. Briefing is ad hoc — engineers arrive without a pre-diagnosis or contextual job pack.</div>
+      </div>
+
+      <div class="pain-card">
+        <div class="pain-stage">Stages 05–06 · Arrive &amp; Diagnose</div>
+        <div class="pain-title">Diagnosis depends on who shows up</div>
+        <div class="pain-body">Fault diagnosis relies entirely on individual expertise. A junior engineer on the same asset as a senior takes significantly longer, is more likely to miss the root cause, and less likely to fix first time.</div>
+      </div>
+
+      <div class="pain-card">
+        <div class="pain-stage">Stage 08 · Document</div>
+        <div class="pain-title">Compliance is manual and inconsistent</div>
+        <div class="pain-body">On regulated estates (NHS, government) every maintenance action must be evidenced. Documentation is captured by the engineer manually, in inconsistent formats, creating high audit preparation overhead.</div>
+      </div>
+
+      <div class="pain-card">
+        <div class="pain-stage">Stage 09 · Close &amp; Learn</div>
+        <div class="pain-title">No feedback loop to planning</div>
+        <div class="pain-body">SLA breaches are discovered retrospectively. Root cause data captured in the field is not fed back into asset maintenance schedules or used to improve future dispatch decisions.</div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════
+       SECTION 4: HOW MIGHT WE
+       ══════════════════════════════ -->
+  <div class="ws-sec">
+    <div class="ws-sec-lbl">// 04 — How Might We · Opportunity Questions</div>
+    <div class="hmw-grid">
+
+      <div class="hmw-card">
+        <div class="hmw-tag">Stages 05–06 · Diagnose</div>
+        <div class="hmw-q">How might we give <strong>any engineer</strong> the diagnostic capability of the best engineer on that asset — regardless of their individual experience?</div>
+      </div>
+
+      <div class="hmw-card">
+        <div class="hmw-tag">Stages 05–06 · Context</div>
+        <div class="hmw-q">How might we surface <strong>schematics, service history, and live BMS readings</strong> as a single briefing — before the engineer physically intervenes?</div>
+      </div>
+
+      <div class="hmw-card">
+        <div class="hmw-tag">Stages 01–02 · Detect</div>
+        <div class="hmw-q">How might we <strong>predict failures</strong> before they impact occupants by connecting BMS sensor data to work order triggers automatically?</div>
+      </div>
+
+      <div class="hmw-card">
+        <div class="hmw-tag">Stage 03 · Plan</div>
+        <div class="hmw-q">How might we <strong>eliminate aborted visits</strong> by confirming parts availability and engineer skill match before the job is dispatched?</div>
+      </div>
+
+      <div class="hmw-card">
+        <div class="hmw-tag">Stage 08 · Document</div>
+        <div class="hmw-q">How might we <strong>auto-generate audit-ready compliance evidence</strong> at the point of work — with zero manual input from the engineer?</div>
+      </div>
+
+      <div class="hmw-card">
+        <div class="hmw-tag">Stage 04 · Dispatch</div>
+        <div class="hmw-q">How might we give planners <strong>real-time visibility of all engineers</strong> — directly employed and subcontracted — in a single dispatch view?</div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════
+       SECTION 5: WHERE RESOLVE FITS
+       ══════════════════════════════ -->
+  <div class="ws-sec">
+    <div class="ws-sec-lbl">// 05 — Where Resolve Adds Value</div>
+
+    <div class="opp-bar">
+      <div class="opp-bar-icon">
+        <svg width="20" height="20" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><g transform="translate(24,24)"><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(0)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(45)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(90)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(135)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(180)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(225)"/><line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(270)"/><line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(315)"/><circle cx="0" cy="0" r="3" fill="#9B5CF6"/></g></svg>
+      </div>
+      <div class="opp-bar-text">
+        <strong>Resolve is the point-of-work intelligence layer</strong> — it activates at stages 5–8, bridging EAM asset data and FSM job management at the exact moment the engineer is on-site. It doesn't replace either system; it makes both more effective by eliminating the knowledge gap between the office and the field.
+      </div>
+    </div>
+
+    <div class="opp-grid">
+
+      <div class="opp-card">
+        <div class="opp-stage-range">Stage 05 · On-Site Arrival</div>
+        <div class="opp-title">Rich job briefing</div>
+        <div class="opp-body">Schematics, O&amp;M manuals, full service history, and live BMS readings surfaced in-context on the engineer's mobile — before they open the panel.</div>
+      </div>
+
+      <div class="opp-card">
+        <div class="opp-stage-range">Stage 06 · Diagnose</div>
+        <div class="opp-title">AI fault diagnosis</div>
+        <div class="opp-body">Engineer captures fault via video, image, or audio. Resolve delivers AI-assisted root cause identification — standardising diagnosis quality across the full workforce.</div>
+      </div>
+
+      <div class="opp-card">
+        <div class="opp-stage-range">Stage 07 · Repair</div>
+        <div class="opp-title">Guided repair workflow</div>
+        <div class="opp-body">Step-by-step SOP guidance, torque specs, and safety checklists surfaced in the workflow — reducing variation between engineers and improving first-time fix rate.</div>
+      </div>
+
+      <div class="opp-card">
+        <div class="opp-stage-range">Stage 08 · Document</div>
+        <div class="opp-title">Compliance auto-generated</div>
+        <div class="opp-body">Evidence captured through Resolve (video, image, voice notes) is automatically structured into an audit-ready compliance record — zero manual form-filling.</div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════
+       SECTION 6: ASSUMPTIONS TO TEST
+       ══════════════════════════════ -->
+  <div class="ws-sec">
+    <div class="ws-sec-lbl">// 06 — Assumptions to Test in Discovery</div>
+    <div class="assume-list">
+      <div class="assume-item"><span class="assume-n">A-01</span>Engineers currently have no structured access to schematics or manuals while on-site — diagnosis is done from memory or by calling a colleague.</div>
+      <div class="assume-item"><span class="assume-n">A-02</span>First-time fix rates vary significantly by engineer seniority — junior engineers on complex M&amp;E assets have materially lower FTFR than senior counterparts.</div>
+      <div class="assume-item"><span class="assume-n">A-03</span>Compliance documentation on regulated estates (DWP, NHS) is currently captured manually and requires significant rework before audit submission.</div>
+      <div class="assume-item"><span class="assume-n">A-04</span>BMS data is available and structured enough to trigger predictive maintenance work orders — but the integration to FSM/EAM work order creation has not been built.</div>
+      <div class="assume-item"><span class="assume-n">A-05</span>The gap in diagnostic quality between direct employees and subcontractors is a known planner concern — particularly on newly mobilised contracts.</div>
+      <div class="assume-item"><span class="assume-n">A-06</span>SLA penalty clauses in government contracts make even a 5–10% improvement in first-time fix rate financially material at the contract level.</div>
+    </div>
+  </div>
+
+</div><!-- /ws-wrap -->
+</div><!-- /pane-workshop -->
 
 
 <script>
