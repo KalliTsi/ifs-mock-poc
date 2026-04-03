@@ -1,0 +1,332 @@
+
+<style>
+  :root {
+    --color-bg: #0A0A0A;
+    --color-surface: #111111;
+    --color-surface-raised: #1A1A1A;
+    --color-border: #1E1E1E;
+    --color-border-subtle: #2A2A2A;
+    --color-text-primary: #FFFFFF;
+    --color-text-secondary: #888888;
+    --color-text-tertiary: #555555;
+    --color-accent: #7C3AED;
+    --color-accent-bright: #9B5CF6;
+    --color-accent-muted: #3B1F75;
+    --color-success: #22C55E;
+    --color-priority-high: #F59E0B;
+    --color-priority-high-bg: #2D1F00;
+    --color-destructive: #EF4444;
+    --font-ui: 'SF Pro Display', 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    --font-mono: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-pill: 999px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .wrap {
+    background: var(--color-bg);
+    font-family: var(--font-ui);
+    color: var(--color-text-primary);
+    padding: 0 0 2rem;
+    min-height: 100%;
+  }
+  .header {
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .header-text { font-size: 17px; font-weight: 600; color: var(--color-text-primary); letter-spacing: -0.3px; }
+  .header-sub { font-size: 12px; color: var(--color-text-secondary); margin-top: 1px; }
+  .body { padding: 20px; }
+  .section { margin-bottom: 24px; }
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent-bright);
+    margin-bottom: 10px;
+  }
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    margin-bottom: 8px;
+  }
+  .card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 8px;
+    letter-spacing: -0.2px;
+  }
+  .card-body {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+  }
+  .pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    margin: 4px 4px 0 0;
+  }
+  .pill-accent { background: var(--color-accent-muted); color: var(--color-accent-bright); }
+  .pill-success { background: rgba(34,197,94,0.12); color: #4ade80; }
+  .pill-amber { background: var(--color-priority-high-bg); color: var(--color-priority-high); }
+  .pill-red { background: rgba(239,68,68,0.12); color: #f87171; }
+  .pill-gray { background: #1A1A1A; color: var(--color-text-secondary); border: 1px solid var(--color-border-subtle); }
+  .grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 8px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 8px; }
+  .sub-card {
+    background: var(--color-surface-raised);
+    border-radius: var(--radius-md);
+    padding: 12px;
+    border: 1px solid var(--color-border-subtle);
+  }
+  .sub-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 5px;
+    letter-spacing: 0.02em;
+  }
+  .sub-body {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+  }
+  .divider {
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin: 20px 0;
+  }
+  .accent-bar-purple {
+    border-left: 2px solid var(--color-accent-bright);
+    padding-left: 12px;
+  }
+  .accent-bar-green {
+    border-left: 2px solid var(--color-success);
+    padding-left: 12px;
+  }
+  .accent-bar-red {
+    border-left: 2px solid var(--color-destructive);
+    padding-left: 12px;
+  }
+  .metric-num {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--color-accent-bright);
+    margin-bottom: 4px;
+    letter-spacing: -0.5px;
+  }
+  .metric-label {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    line-height: 1.45;
+  }
+  .ai-dots { display: flex; gap: 5px; align-items: center; margin-top: 10px; }
+  .ai-dot { width: 9px; height: 9px; border-radius: 50%; }
+  .ai-dot-on { background: var(--color-accent-bright); }
+  .ai-dot-off { background: var(--color-border-subtle); }
+  .ai-dot-label { font-size: 11px; color: var(--color-text-tertiary); margin-left: 6px; font-family: var(--font-mono); }
+  .tag-row { margin-top: 10px; }
+  .badge-system {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--color-surface-raised);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-pill);
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    margin: 4px 4px 0 0;
+  }
+  .badge-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+  }
+</style>
+
+<div class="wrap">
+
+  <div class="header">
+    <svg width="36" height="36" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+      <rect width="48" height="48" rx="12" fill="#1A1A1A"/>
+      <g transform="translate(24, 24)">
+        <line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(0)"/>
+        <line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(22.5)"/>
+        <line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(45)"/>
+        <line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(67.5)"/>
+        <line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(90)"/>
+        <line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(112.5)"/>
+        <line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(135)"/>
+        <line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(157.5)"/>
+        <line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(180)"/>
+        <line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(202.5)"/>
+        <line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(225)"/>
+        <line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(247.5)"/>
+        <line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(270)"/>
+        <line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(292.5)"/>
+        <line x1="0" y1="-16" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="2" stroke-linecap="round" transform="rotate(315)"/>
+        <line x1="0" y1="-13" x2="0" y2="-7" stroke="#9B5CF6" stroke-width="1.4" stroke-linecap="round" transform="rotate(337.5)"/>
+        <circle cx="0" cy="0" r="3" fill="#9B5CF6"/>
+      </g>
+    </svg>
+    <div>
+      <div class="header-text">ISS UK & Ireland — Use Case Analysis</div>
+      <div class="header-sub">Powered by Nexus Black · Resolve</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <div class="section">
+      <div class="section-label">// Company profile</div>
+      <div class="card">
+        <div class="card-title">ISS UK & Ireland — Integrated Facilities Management at enterprise scale</div>
+        <div class="card-body">ISS is one of the world's largest FM providers, operating across government, healthcare, transport, commercial real estate, education, and retail in the UK and Ireland. Services span cleaning, catering, technical engineering (M&E), planned and reactive building maintenance, security, and grounds management. Tens of thousands of field-based placemakers deployed daily across hundreds of client sites via a hybrid model of directly employed engineers and a managed subcontractor network.<br><br>Major contracts include the DWP (£135M, 7-year IFM), Defra, the FCDO (£34M, 5-year), Northern Trains (477 sites), Virgin Media O2, Unibail-Rodamco-Westfield, and Warwick Hospital.</div>
+        <div class="tag-row">
+          <span class="pill pill-gray">Government</span>
+          <span class="pill pill-gray">Healthcare</span>
+          <span class="pill pill-gray">Transport</span>
+          <span class="pill pill-gray">Commercial RE</span>
+          <span class="pill pill-gray">Retail</span>
+          <span class="pill pill-gray">Education</span>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <div class="card-title">AI maturity</div>
+          <div class="card-body">Moderate. ISS has invested in building management systems, sustainability analytics, and has publicly explored AI's role in the built environment — including a CIO-led AI white paper series. However, AI adoption in engineering and fault diagnosis remains limited. Field decisions still rely heavily on individual technician expertise rather than AI-assisted diagnostic workflows.</div>
+          <div class="ai-dots">
+            <div class="ai-dot ai-dot-on"></div>
+            <div class="ai-dot ai-dot-on"></div>
+            <div class="ai-dot ai-dot-on"></div>
+            <div class="ai-dot ai-dot-off"></div>
+            <div class="ai-dot ai-dot-off"></div>
+            <span class="ai-dot-label">Moderate — FM-led, not AI-led in engineering</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">System category fit</div>
+          <div class="card-body">ISS sits at the intersection of FSM and EAM. Field dispatch, mobile work orders, and subcontractor management are FSM in nature; asset maintenance schedules, compliance tracking, and audit-trail generation across client-owned buildings bring EAM characteristics. Regulatory complexity on public sector estates elevates the compliance dimension beyond typical FSM scope.</div>
+          <div class="tag-row">
+            <span class="badge-system"><span class="badge-dot" style="background:#9B5CF6;"></span>Primary: FSM</span>
+            <span class="badge-system"><span class="badge-dot" style="background:#22C55E;"></span>Secondary: EAM</span>
+            <span class="badge-system"><span class="badge-dot" style="background:#F59E0B;"></span>AI tooling: Resolve</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-label">// Use case & problem</div>
+      <div class="card">
+        <div class="card-title">Multi-site IFM delivery across complex, regulated estates</div>
+        <div class="card-body">ISS manages thousands of assets and work orders across hundreds of client sites simultaneously — a combination of planned preventive maintenance (PPM), reactive fault response, and compliance-driven inspections covering M&E, fire safety, lifts, and building fabric. The operational challenge is structurally complex: a hybrid workforce of directly employed engineers and subcontractors, strict SLA commitments baked into government contracts, and a mandatory requirement to evidence compliance across regulated estates including healthcare and central government.</div>
+      </div>
+      <div class="grid2">
+        <div class="card accent-bar-red">
+          <div class="card-title">Operational friction</div>
+          <div class="card-body">Disconnected scheduling, parts inventory, and subcontractor visibility create repeat call-outs and SLA exposure. Engineer performance varies significantly across a large, distributed workforce of mixed seniority — fault diagnosis relies on individual knowledge rather than a structured, repeatable process.</div>
+          <div class="tag-row">
+            <span class="pill pill-red">SLA penalty risk</span>
+            <span class="pill pill-red">Repeat call-outs</span>
+            <span class="pill pill-red">Parts availability</span>
+          </div>
+        </div>
+        <div class="card accent-bar-red">
+          <div class="card-title">Compliance & knowledge risk</div>
+          <div class="card-body">Regulated estates require auditable evidence of every maintenance action. As ISS mobilises large new contracts (DWP, Defra) and rapidly onboards new workforces, standardising engineer quality and ensuring consistent compliance documentation becomes operationally critical at scale.</div>
+          <div class="tag-row">
+            <span class="pill pill-red">Audit trail gaps</span>
+            <span class="pill pill-red">Workforce onboarding</span>
+            <span class="pill pill-red">Knowledge dependency</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-label">// Value proposition</div>
+
+      <div class="card" style="margin-bottom:8px;">
+        <div class="card-title accent-bar-green">Operations layer — connected field management</div>
+        <div class="card-body" style="margin-top:8px;">A unified platform connecting job scheduling, M&E parts inventory, subcontractor dispatch, compliance record-keeping, and audit trail generation across all client sites. Planners gain real-time visibility across the entire hybrid workforce — directly employed and subcontracted — eliminating the data fragmentation that drives SLA breaches and reactive inefficiencies.</div>
+        <div class="tag-row">
+          <span class="pill pill-success">Scheduling & dispatch</span>
+          <span class="pill pill-success">Subcontractor management</span>
+          <span class="pill pill-success">Parts inventory integration</span>
+          <span class="pill pill-success">Compliance documentation</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title accent-bar-purple">Field layer — Resolve AI fault diagnosis</div>
+        <div class="card-body" style="margin-top:8px;">Engineers use Resolve to capture faults via video and audio, receive AI-assisted diagnosis, and follow guided repair workflows — reducing reliance on individual expertise and standardising quality across a large, geographically dispersed team. Resolve integrates a rich set of contextual data to guide engineers at the exact point of work:</div>
+        <div class="grid2" style="margin-top:10px;">
+          <div class="sub-card">
+            <div class="sub-title">Knowledge integration</div>
+            <div class="sub-body">ESM service history, equipment manuals, standard operating procedures (SOPs), and O&M documentation surfaced in-context — so engineers have the right information at the moment of fault, not back at the depot.</div>
+          </div>
+          <div class="sub-card">
+            <div class="sub-title">Technical data integration</div>
+            <div class="sub-body">Building schematics, asset configuration data, and live sensor and BMS readings fed into the diagnostic workflow — enabling AI-assisted root cause identification before the engineer physically intervenes.</div>
+          </div>
+        </div>
+        <div class="tag-row">
+          <span class="pill pill-accent">AI fault diagnosis</span>
+          <span class="pill pill-accent">ESM & service history</span>
+          <span class="pill pill-accent">Schematics & manuals</span>
+          <span class="pill pill-accent">Sensor & BMS data</span>
+          <span class="pill pill-accent">SOPs & compliance guides</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-label">// ROI & outcomes</div>
+      <div class="grid3">
+        <div class="card">
+          <div class="metric-num">↑</div>
+          <div class="metric-label">First-time fix rate — directly reduces contractual SLA penalty exposure across multi-year government contracts</div>
+        </div>
+        <div class="card">
+          <div class="metric-num">↓</div>
+          <div class="metric-label">Repeat call-outs — fewer return visits reduces cost per job and frees engineer capacity for additional work orders</div>
+        </div>
+        <div class="card">
+          <div class="metric-num">↓</div>
+          <div class="metric-label">Compliance risk — audit-ready records generated automatically on regulated NHS and government estates</div>
+        </div>
+      </div>
+      <div class="grid2" style="margin-top:8px;">
+        <div class="card">
+          <div class="card-title">Contract-level financial case</div>
+          <div class="card-body">In IFM contracts, SLA failure triggers defined financial penalties — making the ROI case more precise than in typical service contexts. Every improvement in first-time fix rate has a directly quantifiable downside avoided. With ISS managing contracts worth hundreds of millions across multi-year terms, even marginal SLA improvements carry material financial impact.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Workforce scale & onboarding</div>
+          <div class="card-body">As ISS rapidly mobilises large new contract workforces — DWP (2025), Defra — Resolve accelerates onboarding by embedding knowledge into the engineer's workflow. The gap between a senior M&E specialist and a less experienced operative narrows when both are guided by the same AI-assisted diagnostic process, SOPs, schematics, and live sensor data.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
