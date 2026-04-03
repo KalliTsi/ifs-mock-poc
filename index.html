@@ -406,6 +406,40 @@ hr.div{border:none;border-top:1px solid var(--border);margin:20px 0}
 .assume-list{display:flex;flex-direction:column;gap:8px}
 .assume-item{display:flex;align-items:baseline;gap:12px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:12.5px;color:var(--txt2);line-height:1.5}
 .assume-n{font-family:var(--mono);font-size:9px;color:var(--txt3);flex-shrink:0;letter-spacing:.06em}
+
+/* Personas */
+.persona-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.persona-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:border-color 200ms}
+.persona-card:hover{border-color:var(--border-sub)}
+.persona-top{padding:20px 20px 16px;display:flex;align-items:flex-start;gap:14px}
+.persona-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;font-weight:700;font-family:var(--mono);letter-spacing:0}
+.persona-avatar.field{background:rgba(155,92,246,.15);color:var(--acc-br);border:1px solid rgba(155,92,246,.25)}
+.persona-avatar.planner{background:rgba(34,197,94,.12);color:#4ade80;border:1px solid rgba(34,197,94,.22)}
+.persona-avatar.manager{background:rgba(245,158,11,.1);color:#fbbf24;border:1px solid rgba(245,158,11,.2)}
+.persona-avatar.client{background:rgba(96,165,250,.1);color:#93c5fd;border:1px solid rgba(96,165,250,.2)}
+.persona-avatar.sub{background:rgba(251,146,60,.1);color:#fdba74;border:1px solid rgba(251,146,60,.2)}
+.persona-avatar.helpdesk{background:rgba(52,211,153,.1);color:#6ee7b7;border:1px solid rgba(52,211,153,.2)}
+.persona-meta{flex:1;min-width:0}
+.persona-role{font-size:11px;font-weight:700;color:var(--txt);letter-spacing:-.1px;line-height:1.3;margin-bottom:3px}
+.persona-org{font-family:var(--mono);font-size:9.5px;color:var(--txt3);letter-spacing:.04em}
+.persona-tag{display:inline-block;margin-top:5px;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:600;font-family:var(--mono);letter-spacing:.04em}
+.persona-tag.primary{background:rgba(124,58,237,.15);color:var(--acc-br);border:1px solid rgba(124,58,237,.2)}
+.persona-tag.secondary{background:rgba(255,255,255,.05);color:var(--txt3);border:1px solid var(--border)}
+.persona-divider{height:1px;background:var(--border);margin:0 20px}
+.persona-body{padding:16px 20px;display:flex;flex-direction:column;gap:12px;flex:1}
+.persona-quote{font-size:12px;font-style:italic;color:var(--txt2);line-height:1.6;padding:10px 12px;background:rgba(255,255,255,.03);border-left:2px solid var(--border-sub);border-radius:0 6px 6px 0}
+.persona-attr-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.persona-attr{display:flex;flex-direction:column;gap:3px}
+.persona-attr-lbl{font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--txt3)}
+.persona-attr-val{font-size:11.5px;color:var(--txt2);line-height:1.4}
+.persona-needs{padding:14px 20px;background:#0A0A0D;border-top:1px solid var(--border)}
+.persona-needs-lbl{font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--txt3);margin-bottom:8px}
+.persona-needs-list{display:flex;flex-direction:column;gap:5px}
+.persona-need{display:flex;align-items:flex-start;gap:7px;font-size:11.5px;color:var(--txt2);line-height:1.4}
+.persona-need::before{content:'→';font-family:var(--mono);color:var(--acc-br);flex-shrink:0;font-size:10px;margin-top:1px}
+.persona-resolve-fit{padding:12px 20px 16px;border-top:1px solid rgba(124,58,237,.15);background:rgba(124,58,237,.04)}
+.persona-resolve-lbl{font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--acc-br);margin-bottom:6px}
+.persona-resolve-val{font-size:11.5px;color:var(--txt2);line-height:1.5}
 </style>
 </head>
 <body>
@@ -1317,6 +1351,220 @@ hr.div{border:none;border-top:1px solid var(--border);margin:20px 0}
       <div class="assume-item"><span class="assume-n">A-05</span>The gap in diagnostic quality between direct employees and subcontractors is a known planner concern — particularly on newly mobilised contracts.</div>
       <div class="assume-item"><span class="assume-n">A-06</span>SLA penalty clauses in government contracts make even a 5–10% improvement in first-time fix rate financially material at the contract level.</div>
     </div>
+  </div>
+
+
+  <!-- Section 07: User Personas -->
+  <div class="ws-sec">
+    <div class="ws-sec-lbl">// 07 — User Personas</div>
+    <p class="ws-sub" style="margin-bottom:24px">Six personas covering the full Resolve user ecosystem — from the field engineer holding a phone in one hand to the contract manager reading the SLA dashboard.</p>
+    <div class="persona-grid">
+
+      <!-- Persona 1: Field Engineer -->
+      <div class="persona-card">
+        <div class="persona-top">
+          <div class="persona-avatar field">FE</div>
+          <div class="persona-meta">
+            <div class="persona-role">Field Service Engineer</div>
+            <div class="persona-org">ISS Technical Services — M&amp;E</div>
+            <span class="persona-tag primary">Primary User</span>
+          </div>
+        </div>
+        <div class="persona-divider"></div>
+        <div class="persona-body">
+          <div class="persona-quote">"I'm on my third job by 9am. I don't have time to type a long fault description — I just need to log it, get the right info, and move on."</div>
+          <div class="persona-attr-grid">
+            <div class="persona-attr"><div class="persona-attr-lbl">Environment</div><div class="persona-attr-val">Plant rooms, rooftops, basements — noisy, often hands-busy</div></div>
+            <div class="persona-attr"><div class="persona-attr-lbl">Tech comfort</div><div class="persona-attr-val">Smartphone-native, low tolerance for complex UIs</div></div>
+            <div class="persona-attr"><div class="persona-attr-lbl">Works with</div><div class="persona-attr-val">CAFM app, whitepapers, phone calls to colleagues</div></div>
+            <div class="persona-attr"><div class="persona-attr-lbl">Seniority</div><div class="persona-attr-val">2–12 yrs experience; wide range on complex assets</div></div>
+          </div>
+        </div>
+        <div class="persona-needs">
+          <div class="persona-needs-lbl">Key needs</div>
+          <div class="persona-needs-list">
+            <div class="persona-need">Instant fault logging without typing</div>
+            <div class="persona-need">On-demand access to schematics &amp; manuals at the asset</div>
+            <div class="persona-need">Guidance on unfamiliar or complex assets</div>
+          </div>
+        </div>
+        <div class="persona-resolve-fit">
+          <div class="persona-resolve-lbl">Resolve fit</div>
+          <div class="persona-resolve-val">Photo-first capture + AI diagnosis fills the knowledge gap on-site. Voice logging removes the typing burden in gloved-hand conditions.</div>
+        </div>
+      </div>
+
+      <!-- Persona 2: FM Planner -->
+      <div class="persona-card">
+        <div class="persona-top">
+          <div class="persona-avatar planner">PL</div>
+          <div class="persona-meta">
+            <div class="persona-role">FM Planner / Work Order Controller</div>
+            <div class="persona-org">ISS Operations Centre</div>
+            <span class="persona-tag primary">Primary User</span>
+          </div>
+        </div>
+        <div class="persona-divider"></div>
+        <div class="persona-body">
+          <div class="persona-quote">"Half my day is chasing engineers for proper fault descriptions so I can raise the right work order. Half the time the job comes back because parts weren't pre-ordered."</div>
+          <div class="persona-attr-grid">
+            <div class="persona-attr"><div class="persona-attr-lbl">Environment</div><div class="persona-attr-val">Open-plan operations room, dual-screen, high-volume</div></div>
+            <div class="persona-attr"><div class="persona-attr-lbl">Tech comfort</div><div class="persona-attr-val">High — power user of CAFM, scheduling tools</div></div>
+            <div class="persona-attr"><div class="persona-attr-lbl">Works with</div><div class="persona-attr-val">Work order queues, parts catalogues, subcontractor rotas</div></div>
+            <div class="persona-attr"><div class="persona-attr-lbl">Pain point</div><div class="persona-attr-val">Incomplete job data; repeat visits; reactive chaos</div></div>
+          </div>
+        </div>
+        <div class="persona-needs">
+          <div class="persona-needs-lbl">Key needs</div>
+          <div class="persona-needs-list">
+            <div class="persona-need">Structured fault data from first contact, not after 3 calls</div>
+            <div class="persona-need">AI-suggested priority and parts before dispatch</div>
+            <div class="persona-need">Visibility of engineer skill match to job complexity</div>
+          </div>
+        </div>
+        <div class="persona-resolve-fit">
+          <div class="persona-resolve-lbl">Resolve fit</div>
+          <div class="persona-resolve-val">AI-extracted fault metadata (component, fault type, severity, location) flows directly into work order — eliminating the planner's triage call.</div>
+        </div>
+      </div>
+
+      <!-- Persona 3: Contract / Account Manager -->
+      <div class="persona-card">
+        <div class="persona-top">
+          <div class="persona-avatar manager">AM</div>
+          <div class="persona-meta">
+            <div class="persona-role">Contract / Account Manager</div>
+            <div class="persona-org">ISS Client Services</div>
+            <span class="persona-tag secondary">Secondary User</span>
+          </div>
+        </div>
+        <div class="persona-divider"></div>
+        <div class="persona-body">
+          <div class="persona-quote">"When the client calls to ask why a P1 is still open after 4 hours, I shouldn't have to pull 3 spreadsheets to give them an answer."</div>
+          <div class="persona-attr-grid">
+            <div class="persona-attr"><div class="persona-attr-lbl">Environment</div><div class="persona-attr-val">Office + client site visits; board-level reporting cycles</div></div>
+            <div class="persona-attr"><div class="persona-attr-lbl">Tech comfort</div><div class="persona-attr-val">Moderate — comfortable with dashboards, not system admin</div></div>
+            <div class="persona-attr"><div class="persona-attr-lbl">Works with</div><div class="persona-attr-val">SLA reports, client relationship meetings, P&amp;L data</div></div>
+            <div class="persona-attr"><div class="persona-attr-lbl">Pain point</div><div class="persona-attr-val">SLA penalty exposure; hard to evidence performance quality</div></div>
+          </div>
+        </div>
+        <div class="persona-needs">
+          <div class="persona-needs-lbl">Key needs</div>
+          <div class="persona-needs-list">
+            <div class="persona-need">Real-time SLA status without chasing the ops team</div>
+            <div class="persona-need">Audit-ready evidence trail for compliance disputes</div>
+            <div class="persona-need">Trend data to identify repeat asset failures before client notices</div>
+          </div>
+        </div>
+        <div class="persona-resolve-fit">
+          <div class="persona-resolve-lbl">Resolve fit</div>
+          <div class="persona-resolve-val">Every Resolve job produces a timestamped, AI-annotated record. SLA evidence is a by-product of normal workflow, not a separate audit exercise.</div>
+        </div>
+      </div>
+
+      <!-- Persona 4: Client-Side Facilities Manager -->
+      <div class="persona-card">
+        <div class="persona-top">
+          <div class="persona-avatar client">CF</div>
+          <div class="persona-meta">
+            <div class="persona-role">Client-Side Facilities Manager</div>
+            <div class="persona-org">DWP / NHS / Commercial Estate</div>
+            <span class="persona-tag secondary">Secondary User</span>
+          </div>
+        </div>
+        <div class="persona-divider"></div>
+        <div class="persona-body">
+          <div class="persona-quote">"I'm responsible for making sure this building works for 3,000 staff. I need confidence that faults are being fixed properly — not just closed on the system."</div>
+          <div class="persona-attr-grid">
+            <div class="persona-attr"><div class="persona-attr-lbl">Environment</div><div class="persona-attr-val">Government or commercial office estate; compliance-heavy</div></div>
+            <div class="persona-attr"><div class="persona-attr-lbl">Tech comfort</div><div class="persona-attr-val">Low-moderate — uses portals but expects simplicity</div></div>
+            <div class="persona-attr"><div class="persona-attr-lbl">Works with</div><div class="persona-attr-val">Helpdesk portal, FM contract SLA reports, BMS alerts</div></div>
+            <div class="persona-attr"><div class="persona-attr-lbl">Pain point</div><div class="persona-attr-val">Opacity of what's happening after a fault is raised</div></div>
+          </div>
+        </div>
+        <div class="persona-needs">
+          <div class="persona-needs-lbl">Key needs</div>
+          <div class="persona-needs-list">
+            <div class="persona-need">Simple view of open faults and expected resolution</div>
+            <div class="persona-need">Photo evidence that the right fix was applied</div>
+            <div class="persona-need">Compliance documentation without chasing the FM provider</div>
+          </div>
+        </div>
+        <div class="persona-resolve-fit">
+          <div class="persona-resolve-lbl">Resolve fit</div>
+          <div class="persona-resolve-val">Before/after AI-annotated images with auto-generated job summaries give the client verifiable proof of work — reducing dispute risk on both sides.</div>
+        </div>
+      </div>
+
+      <!-- Persona 5: Subcontractor Engineer -->
+      <div class="persona-card">
+        <div class="persona-top">
+          <div class="persona-avatar sub">SC</div>
+          <div class="persona-meta">
+            <div class="persona-role">Subcontractor Field Engineer</div>
+            <div class="persona-org">Managed supply chain — specialist trades</div>
+            <span class="persona-tag secondary">Secondary User</span>
+          </div>
+        </div>
+        <div class="persona-divider"></div>
+        <div class="persona-body">
+          <div class="persona-quote">"Every FM company has a different app, a different process, a different way to log a job. I just want to get in, fix it, and get to the next one."</div>
+          <div class="persona-attr-grid">
+            <div class="persona-attr"><div class="persona-attr-lbl">Environment</div><div class="persona-attr-val">Multiple client sites per day; different ISS contracts</div></div>
+            <div class="persona-attr"><div class="persona-attr-lbl">Tech comfort</div><div class="persona-attr-val">Low — minimal training investment from supply chain</div></div>
+            <div class="persona-attr"><div class="persona-attr-lbl">Works with</div><div class="persona-attr-val">Shared access credentials; often paper-based backup</div></div>
+            <div class="persona-attr"><div class="persona-attr-lbl">Pain point</div><div class="persona-attr-val">No knowledge of asset history; no access to manuals</div></div>
+          </div>
+        </div>
+        <div class="persona-needs">
+          <div class="persona-needs-lbl">Key needs</div>
+          <div class="persona-needs-list">
+            <div class="persona-need">Zero onboarding friction — usable from first visit</div>
+            <div class="persona-need">Asset history and prior fault context at the point of work</div>
+            <div class="persona-need">Simple proof-of-work capture that satisfies ISS sign-off</div>
+          </div>
+        </div>
+        <div class="persona-resolve-fit">
+          <div class="persona-resolve-lbl">Resolve fit</div>
+          <div class="persona-resolve-val">Camera-led, voice-first design means subcontractors can log, diagnose, and evidence work with minimal training — and still meet ISS compliance standards.</div>
+        </div>
+      </div>
+
+      <!-- Persona 6: Helpdesk Operator -->
+      <div class="persona-card">
+        <div class="persona-top">
+          <div class="persona-avatar helpdesk">HD</div>
+          <div class="persona-meta">
+            <div class="persona-role">FM Helpdesk Operator</div>
+            <div class="persona-org">ISS National Operations Centre</div>
+            <span class="persona-tag secondary">Secondary User</span>
+          </div>
+        </div>
+        <div class="persona-divider"></div>
+        <div class="persona-body">
+          <div class="persona-quote">"I take maybe 80 calls a day. Half of them are chasing an update on a job someone already logged. I need the system to give me that answer before they even ask."</div>
+          <div class="persona-attr-grid">
+            <div class="persona-attr"><div class="persona-attr-lbl">Environment</div><div class="persona-attr-val">High-volume call centre; dual-screen, queue-driven</div></div>
+            <div class="persona-attr"><div class="persona-attr-lbl">Tech comfort</div><div class="persona-attr-val">High — trained on CAFM; follows scripted processes</div></div>
+            <div class="persona-attr"><div class="persona-attr-lbl">Works with</div><div class="persona-attr-val">CAFM job board, asset register, escalation matrix</div></div>
+            <div class="persona-attr"><div class="persona-attr-lbl">Pain point</div><div class="persona-attr-val">Poor-quality fault descriptions make triage guesswork</div></div>
+          </div>
+        </div>
+        <div class="persona-needs">
+          <div class="persona-needs-lbl">Key needs</div>
+          <div class="persona-needs-list">
+            <div class="persona-need">Structured fault data to assign priority without interrogating the caller</div>
+            <div class="persona-need">Live job status to handle chase calls without escalating</div>
+            <div class="persona-need">Consistent data quality from both direct engineers and subcontractors</div>
+          </div>
+        </div>
+        <div class="persona-resolve-fit">
+          <div class="persona-resolve-lbl">Resolve fit</div>
+          <div class="persona-resolve-val">AI-extracted fault attributes mean every job arrives with consistent, structured data — cutting triage time and enabling first-call resolution on status queries.</div>
+        </div>
+      </div>
+
+    </div><!-- /persona-grid -->
   </div>
 
 </div><!-- /ws-wrap -->
